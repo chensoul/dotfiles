@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# PATH ALTERATIONS
-PATH=/usr/local/bin:$HOME/bin:$PATH
-
 export ZSH=$HOME/.oh-my-zsh
 
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
