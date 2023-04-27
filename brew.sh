@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-# Install command-line tools using Homebrew.
+echo "Hello $(whoami)! Let's get you set up."
+
+echo "installing homebrew"
+# install homebrew https://brew.sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/chensoul/.zshrc
 
 # Make sure we’re using the latest Homebrew.
 brew update
@@ -8,74 +14,25 @@ brew update
 # Upgrade any already-installed formulae.
 brew upgrade
 
-# Save Homebrew’s installed location.
-BREW_PREFIX=$(brew --prefix)
+echo "brew installing font"
+brew tap homebrew/cask-fonts
+brew install font-fantasque-sans-mono-nerd-font
+# 安装「霞鹜文楷」字体
+brew install font-lxgw-wenkai
 
-# Install GNU core utilities (those that come with macOS are outdated).
-# Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
-brew install coreutils
-ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
+echo "brew installing useful binaries"
+# hub: a github-specific version of git
+# ripgrep: rg is faster than alternatives
+# ffmpeg: eventually I'll need this for something
+# tree: really handy for listing out directories in text
+# bat: A cat(1) clone with syntax highlighting and Git integration.
+# delta: A fantastic diff tool
+brew install git hub ripgrep ffmpeg tree tmux bat wget vim hugo maven go python3
 
-# Install some other useful utilities like `sponge`.
-brew install moreutils
-# Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed.
-brew install findutils
-# Install GNU `sed`, overwriting the built-in `sed`.
-brew install gnu-sed --with-default-names
-
-# Install `wget` with IRI support.
-brew install wget --with-iri
-
-# Install font tools.
-brew tap bramstein/webfonttools
-brew install sfnt2woff
-brew install sfnt2woff-zopfli
-brew install woff2
-
-# Install some CTF tools; see https://github.com/ctfs/write-ups.
-brew install aircrack-ng
-brew install bfg
-brew install binutils
-brew install binwalk
-brew install cifer
-brew install dex2jar
-brew install dns2tcp
-brew install fcrackzip
-brew install foremost
-brew install hashpump
-brew install hydra
-brew install john
-brew install knock
-brew install netpbm
-brew install nmap
-brew install pngcheck
-brew install socat
-brew install sqlmap
-brew install tcpflow
-brew install tcpreplay
-brew install tcptrace
-brew install ucspi-tcp # `tcpserver` etc.
-brew install xpdf
-brew install xz
-
-# Install other useful binaries.
-brew install ack
-#brew install exiv2
-brew install git
-brew install git-lfs
-brew install gs
-brew install imagemagick --with-webp
-brew install lua
-brew install lynx
-brew install p7zip
-brew install pigz
-brew install pv
-brew install rename
-brew install rlwrap
-brew install ssh-copy-id
-brew install tree
-brew install vbindiff
-brew install zopfli
+echo "brew installing apps with --cask"
+brew install --cask google-chrome brave-browser \
+1password telegram spotify iterm2 typora obsidian postman switchhosts \
+tinypng4mac picgo raycast netnewswire xmind intellij-idea webstorm
 
 # Remove outdated versions from the cellar.
 brew cleanup
