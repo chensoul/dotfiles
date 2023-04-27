@@ -5,4 +5,5 @@ ZSH_THEME="pygmalion"
 
 plugins=(git mvn python zsh-z zsh-autosuggestions zsh-syntax-highlighting)
 
+echo "oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
