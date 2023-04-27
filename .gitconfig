@@ -121,7 +121,6 @@
 	gpgsign = false
 
 [diff]
-
 	# Detect copies as well as renames.
 	renames = copies
 
