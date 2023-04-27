@@ -1,5 +1,3 @@
-#!/bin/bash
-
 export ZSH=$HOME/.oh-my-zsh
 
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
