@@ -6,6 +6,9 @@
 
 # WebStorm
 .idea/
+*.iws
+*.iml
+*.ipr
 
 # npm
 npm-debug.log
@@ -43,3 +46,15 @@ Session.vim
 
 # custom
 logs
+*.log
+
+# java
+.flattened-pom.xml
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.xml.versionsBackup
+
+
+# python
+.env
+.venv
