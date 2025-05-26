@@ -20,12 +20,22 @@ fi
 echo "Installing Softwares"
 brew bundle
 
+# Installing sdkman
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk install springboot
+sdk install maven
+sdk install mvnd
+sdk install jbang
+sdk install gradle
+
+
 # copy files
 files=".gitconfig .aliases .bashrc functions.sh"
 # create symlinks (will overwrite old dotfiles)
 for file in ${files}; do
     echo "Creating symlink to $file in home directory."
-    #ln -sf ${dotfiledir}/${file} ${homedir}/${file}
+    ln -sf ${dotfiledir}/${file} ${homedir}/${file}
 done
 
 # setting
