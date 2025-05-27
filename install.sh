@@ -31,7 +31,7 @@ sdk install gradle
 
 
 # copy files
-files=".gitconfig .aliases .bashrc functions.sh"
+files=".gitconfig .gitconfig-personal .gitconfig-work .aliases .bashrc functions.sh"
 # create symlinks (will overwrite old dotfiles)
 for file in ${files}; do
     echo "Creating symlink to $file in home directory."

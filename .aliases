@@ -36,8 +36,6 @@ alias gcm='git commit -m'
 alias gcl='git clone'
 alias gp='git pull'
 alias gg='git push origin "$(git_current_branch)"'
-alias gfdm='git config user.name "陈志军" && git config user.email zhijun.chen@dmall.com'
-
 
 ### DEVELOPMENT
 alias mw='./mvnw'

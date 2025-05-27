@@ -3,10 +3,6 @@
   pager = cat
   autocrlf = input
 
-[user]
-    name = chensoul
-    email = ichensoul@gmail.com
-
 [alias]
     l  = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --
 [credential]
@@ -15,3 +11,13 @@
 	defaultBranch = main
 [pull]
 	rebase = false
+
+[http "https://github.com"]
+	proxy = socks5://127.0.0.1:7890
+[https "https://github.com"]
+	proxy = socks5://127.0.0.1:7890
+
+[includeIf "gitdir:~/code/github/"]
+    path = .gitconfig-personal
+[includeIf "gitdir:~/code/dmall/"]
+    path = .gitconfig-work
