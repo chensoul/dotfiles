@@ -131,6 +131,8 @@ setup_dotfiles() {
         fi
     done
 
+    source .zshrc
+
     log_success "Dotfiles setup complete"
 }
 
@@ -181,8 +183,8 @@ main() {
     check_macos
     setup_homebrew
     install_software
-    setup_sdkman
     setup_dotfiles
+    setup_sdkman
     setup_ssh
 
     log_success "macOS setup complete! 🎉"

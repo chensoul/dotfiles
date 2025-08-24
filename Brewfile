@@ -25,7 +25,6 @@ brew "spring-io/tap/spring-boot"
 # 语言和运行时
 brew "go"
 brew "python@3.12"
-brew "zulu@8"
 brew "rustup"
 
 # 容器和云工具
@@ -54,7 +53,7 @@ cask "orbstack"
 cask "switchhosts"
 cask "typora"
 cask "ghostty"
-brew "tinypng4mac"
+cask "tinypng4mac"
 cask "picgo"
 
 # 通讯和办公
@@ -62,5 +61,5 @@ cask "wechat"
 cask "feishu"
 
 # 云存储
-cask "aliyunpan"
+brew "aliyunpan"
 cask "baidunetdisk"
