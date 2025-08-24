@@ -1,11 +1,11 @@
 # Oh My Zsh 配置
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
+ZSH_THEME="muse" #random
 
 # 插件
 plugins=(
     git
-    maven
+    mvn
     zsh-autosuggestions
     zsh-syntax-highlighting
     docker
@@ -13,58 +13,18 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-source ~/.aliases
+
+# 加载 SDKMAN
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # 自定义环境变量
 export EDITOR=vim
 export LANG=en_US.UTF-8
 
-# 加载 SDKMAN
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
 # 开发工具路径
-/usr/libexec/java_home -v 21 --exec java -version 2>/dev/null
-export JAVA_HOME=$(/usr/libexec/java_home)
+export JAVA_HOME="$HOME/.sdkman/candidates/java/current"
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
 # 加载 fnm
 eval "$(fnm env --use-on-cd)"
-
-export DOCKER_DEFAULT_PLATFORM=linux/arm64
-# Oh My Zsh 配置
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
-
-# 插件
-plugins=(
-    git
-    maven
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-    docker
-    kubectl
-)
-
-source $ZSH/oh-my-zsh.sh
-source ~/.aliases
-
-# 自定义环境变量
-export EDITOR=vim
-export LANG=en_US.UTF-8
-
-# 加载 SDKMAN
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# 开发工具路径
-/usr/libexec/java_home -v 21 --exec java -version 2>/dev/null
-export JAVA_HOME=$(/usr/libexec/java_home)
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-
-# 加载 fnm
-eval "$(fnm env --use-on-cd)"
-
-export DOCKER_DEFAULT_PLATFORM=linux/arm64
-
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path bash)"

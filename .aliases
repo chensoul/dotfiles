@@ -1,127 +1,494 @@
-#export GPG_TTY=$(tty)
+#!/bin/bash
+# =============================================================================
+# Optimized Shell Aliases and Functions
+# =============================================================================
 
+# Enable GPG TTY for signing
+export GPG_TTY=$(tty)
 
+# =============================================================================
+# BASIC SYSTEM ALIASES
+# =============================================================================
+
+# Quick commands
 alias c='clear'
 alias h='history'
-alias f='open -a Finder ./'                 
-alias p='cd ~/chensoul/Projects/'
-alias s='source'
-alias my='sudo chown -R `id -u`'
-alias path='echo -e ${PATH//:/\\n}'         
-alias ll='ls -la'
+alias reload='source ~/.zshrc'
+alias edit='code'
+alias path='echo -e ${PATH//:/\\n}'
 
+# File operations with better defaults
+alias ls='ls -G'                           # Colorized output
+alias ll='ls -la'                          # Long format with hidden files
+alias la='ls -A'                           # All files except . and ..
+alias l='ls -CF'                           # Classify files
+alias lh='ls -lah'                         # Human readable sizes
+alias lt='ls -ltr'                         # Sort by time, newest last
+alias lsize='ls -laSh'                     # Sort by size, largest first
+
+# Directory navigation
 alias .='pwd'
-alias ..='cd ../..'
-alias ...='cd ../../../'
-alias ....='cd ../../../../'
-alias ~="cd ~"                             
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ~='cd ~'
+alias -- -='cd -'                          # Go to previous directory
 
+# Common directories
+alias dl='cd ~/Downloads'
+alias dt='cd ~/Desktop'
+alias docs='cd ~/Documents'
+alias p='cd ~/chensoul/Projects'
 
-alias publicip="dig +short myip.opendns.com @resolver1.opendns.com" 
-alias localip="ipconfig getifaddr en0"
-alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'" 
-alias delTrash="find . \( -name target -o -name .DS_Store -o -name build  -o -name node_modules \) -type d  -ls -delete"
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup;'
-alias pullcode='for dir in */; do if [[ -d "$dir/.git" ]]; then echo "Entering directory: $dir"; cd "$dir"; git pull; cd ..; fi; done'
-alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
-alias listnm="find . -name "node_modules" -type d -prune -print | xargs du -chs"
+# File permissions
+alias my='sudo chown -R $(id -u):$(id -g)'
+alias fix='sudo chmod -R 755'
 
-### Git
-alias git_current_branch="git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||'"
-alias gaa='git add -A'
+# =============================================================================
+# NETWORK & SYSTEM INFO
+# =============================================================================
+
+# IP addresses
+alias publicip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias localip='ipconfig getifaddr en0'
+alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
+# Network interfaces
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+
+# System monitoring
+alias cpu='top -o cpu'
+alias mem='top -o rsize'
+alias ports='netstat -tulanp'
+
+# =============================================================================
+# CLEANUP & MAINTENANCE
+# =============================================================================
+
+# Clean up common build artifacts and system files
+alias cleanup='find . \( -name target -o -name .DS_Store -o -name build -o -name node_modules -o -name "*.log" \) -type d -ls -delete 2>/dev/null || find . \( -name target -o -name .DS_Store -o -name build -o -name node_modules -o -name "*.log" \) -type f -ls -delete 2>/dev/null'
+
+# System updates
+alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup'
+
+# Find and list node_modules directories with sizes
+alias listnm='find . -name "node_modules" -type d -prune -print | xargs du -chs 2>/dev/null'
+
+# Better tree command (install tree via brew for better version)
+if command -v tree >/dev/null 2>&1; then
+    alias tree='tree -C'                   # Colorized tree
+else
+    alias tree='find . -print | sed -e "s;[^/]*/;|____;g;s;____|; |;g"'
+fi
+
+# =============================================================================
+# GIT ALIASES
+# =============================================================================
+
+# Git status and info
 alias gs='git status'
-alias gst='git status'
+alias gst='git status --short'
+alias gb='git branch'
+alias gba='git branch -a'
+alias gbd='git branch -d'
+alias gbD='git branch -D'
+
+# Git add and commit
+alias ga='git add'
+alias gaa='git add -A'
+alias gap='git add -p'
+alias gc='git commit'
 alias gcm='git commit -m'
-alias gcl='git clone'
+alias gca='git commit -a'
+alias gcam='git commit -am'
+alias gce='git commit --amend'
+
+# Git push and pull
 alias gp='git pull'
+alias gpo='git pull origin'
+alias gpu='git push'
+alias gpuo='git push origin'
+alias gpuom='git push origin main'
+alias gpuod='git push origin develop'
+
+# Git checkout and switch
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gsw='git switch'
+alias gswc='git switch -c'
+
+# Git log and diff
+alias gl='git log --oneline'
+alias glog='git log --oneline --decorate --graph'
+alias gloga='git log --oneline --decorate --graph --all'
+alias gd='git diff'
+alias gdc='git diff --cached'
+
+# Git remote and clone
+alias gcl='git clone'
+alias gr='git remote'
+alias grv='git remote -v'
+
+# Git stash
+alias gsta='git stash'
+alias gstaa='git stash apply'
+alias gstd='git stash drop'
+alias gstl='git stash list'
+alias gstp='git stash pop'
+
+# Git utilities
+alias git_current_branch="git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||'"
 alias gg='git push origin "$(git_current_branch)"'
+alias gundo='git reset --soft HEAD~1'
+alias gclean='git clean -fd'
+
+# Bulk git operations
+alias pullcode='for dir in */; do if [[ -d "$dir/.git" ]]; then echo "📁 Entering: $dir"; cd "$dir"; git pull; cd ..; fi; done'
 alias gfwork='for dir in */; do if [[ -d "$dir/.git" ]]; then cd "$dir" && git config user.name "$WORK_USER" && git config user.email "$WORK_EMAIL" && echo "✅ 配置成功: $dir" || echo "❌ 配置失败: $dir"; cd - >/dev/null; fi; done'
 
+# =============================================================================
+# DEVELOPMENT TOOLS
+# =============================================================================
 
-### DEVELOPMENT
+# Maven
 alias mw='./mvnw'
+alias mwc='./mvnw clean'
+alias mwci='./mvnw clean install'
 alias mwcv='./mvnw clean verify'
+alias mwct='./mvnw clean test'
+alias mwcp='./mvnw clean package'
 
+# Gradle
+alias gw='./gradlew'
+alias gwc='./gradlew clean'
+alias gwb='./gradlew build'
+alias gwt='./gradlew test'
+
+# Node.js & NPM
+alias ni='npm install'
+alias ns='npm start'
+alias nt='npm test'
+alias nb='npm run build'
+alias nrd='npm run dev'
+alias nrs='npm run serve'
+
+# Yarn
 alias yi='yarn install'
 alias ys='yarn start'
+alias yt='yarn test'
+alias yb='yarn build'
+alias yd='yarn dev'
 
-alias d="docker"
-alias dc="docker compose"
-alias dclean="docker ps -aq --no-trunc -f status=exited | xargs docker rm"
-alias dstop="docker ps -aq | xargs docker stop"
-# delete docker images by created date
-#docker image prune -a --force --filter "until=7h"
+# pnpm
+alias pi='pnpm install'
+alias ps='pnpm start'
+alias pt='pnpm test'
+alias pb='pnpm build'
+alias pd='pnpm dev'
 
-#search docker images by name
-#docker images | awk '/^spring/ {print $0}'
+# Python
+alias py='python3'
+alias pip='pip3'
+alias venv='python3 -m venv'
+alias activate='source venv/bin/activate'
 
-#delete docker images by name
-#docker images | awk '/^chensoul/ {print $3}' | xargs docker rmi
+# =============================================================================
+# DOCKER & CONTAINERS
+# =============================================================================
 
-alias hg='hogo server && open http://localhost:1313/'
+alias d='docker'
+alias dc='docker compose'
+alias dcu='docker compose up'
+alias dcd='docker compose down'
+alias dcb='docker compose build'
+alias dcl='docker compose logs'
 
-#k8s
+# Docker management
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+alias di='docker images'
+alias dv='docker volume ls'
+alias dn='docker network ls'
+
+# Docker cleanup
+alias dclean='docker ps -aq --no-trunc -f status=exited | xargs docker rm 2>/dev/null || true'
+alias dstop='docker ps -aq | xargs docker stop 2>/dev/null || true'
+alias dprune='docker system prune -f'
+alias dprunea='docker system prune -af'
+
+# Docker utilities
+alias dexec='docker exec -it'
+alias dlogs='docker logs -f'
+alias dinspect='docker inspect'
+
+# =============================================================================
+# KUBERNETES
+# =============================================================================
+
 alias k='kubectl'
-alias kget='k get all'
-alias klogs='k logs'
+alias kget='kubectl get all'
+alias kdesc='kubectl describe'
+alias klogs='kubectl logs'
+alias kexec='kubectl exec -it'
+alias kapply='kubectl apply -f'
+alias kdelete='kubectl delete -f'
 
+# Minikube
 alias mk='minikube'
-alias mkdb='mk dashboard'
+alias mkstart='minikube start'
+alias mkstop='minikube stop'
+alias mkdb='minikube dashboard'
+alias mkip='minikube ip'
 
-### function
-function mkd() { mkdir -p "$@" && cd "$_"; }     
+# =============================================================================
+# WEB DEVELOPMENT
+# =============================================================================
 
-function killport() { lsof -i tcp:"$*" | awk 'NR!=1 {print $2}' | xargs kill -9 ;}
+# Hugo
+alias hg='hugo server && open http://localhost:1313/'
+alias hgd='hugo server -D && open http://localhost:1313/'
 
-#在本地和远程仓库中重命名 Git 分支
-function grename() {
-  if [[ -z "$1" || -z "$2" ]]; then
-    echo "Usage: $0 old_branch new_branch"
-    return 1
-  fi
+# Local servers
+alias serve='python3 -m http.server 8000'
+alias phpserve='php -S localhost:8000'
 
-  # Rename branch locally
-  git branch -m "$1" "$2"
-  # Rename branch in origin remote
-  if git push origin :"$1"; then
-    git push --set-upstream origin "$2"
-  fi
+# =============================================================================
+# UTILITY FUNCTIONS
+# =============================================================================
+
+# Create directory and navigate to it
+function mkd() {
+    mkdir -p "$@" && cd "$_"
 }
 
-# https://github.com/thanhdevapp/jetbrains-reset-trial-evaluation-mac/blob/master/runme.sh
-function clean_idea(){
-  rm -rf /Applications/IntelliJ\ IDEA.app
-  rm -rf ~/Library/Application\ Support/JetBrains/
-  rm -rf ~/Library/Preferences/com.apple.java.util.prefs.plist
-  rm -rf ~/Library/Preferences/com.jetbrains*
-  rm -rf ~/Library/Preferences/jetbrains*
-  rm -rf ~/Library/Caches/JetBrains
-  rm -rf ~/Library/Logs/JetBrains/
-  rm -rf ~/Library/Saved\ Application\ State/com.jetbrains.intellij.savedState/
-  rm -rf ~/.cache/JetBrains/
-  rm -rf ~/.config
+# Kill process running on specific port
+function killport() {
+    if [[ -z "$1" ]]; then
+        echo "Usage: killport <port_number>"
+        return 1
+    fi
 
-  # Flush preference cache
-  killall cfprefsd
-
+    local pid=$(lsof -ti tcp:"$1")
+    if [[ -n "$pid" ]]; then
+        echo "Killing process $pid on port $1"
+        kill -9 "$pid"
+    else
+        echo "No process found on port $1"
+    fi
 }
 
-function maintenance(){
-  echo "🧹 开始系统维护..."
-
-  echo "📦 更新 Homebrew..."
-  brew update && brew upgrade && brew cleanup
-  
-  echo "🗑️ 清理系统缓存..."
-  sudo rm -rf /System/Library/Caches/* /Library/Caches/*  ~/Library/Caches/*
-  sudo npm cache clean --force 2>/dev/null || true
-  sudo yarn cache clean 2>/dev/null || true
-  sudo go clean -cache 2>/dev/null || true
-  
-  echo "🔍 重建 Spotlight 索引..."
-  sudo mdutil -E /
-  
-  echo "✅ 系统维护完成！"
+# Extract various archive formats
+function extract() {
+    if [[ -f "$1" ]]; then
+        case "$1" in
+            *.tar.bz2)   tar xjf "$1"     ;;
+            *.tar.gz)    tar xzf "$1"     ;;
+            *.bz2)       bunzip2 "$1"     ;;
+            *.rar)       unrar x "$1"     ;;
+            *.gz)        gunzip "$1"      ;;
+            *.tar)       tar xf "$1"      ;;
+            *.tbz2)      tar xjf "$1"     ;;
+            *.tgz)       tar xzf "$1"     ;;
+            *.zip)       unzip "$1"       ;;
+            *.Z)         uncompress "$1"  ;;
+            *.7z)        7z x "$1"        ;;
+            *)           echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
 }
+
+# Find and replace in files
+function findreplace() {
+    if [[ $# -ne 3 ]]; then
+        echo "Usage: findreplace <search_pattern> <replace_pattern> <file_pattern>"
+        return 1
+    fi
+
+    find . -name "$3" -type f -exec sed -i '' "s/$1/$2/g" {} +
+}
+
+# Get file size in human readable format
+function filesize() {
+    if [[ -f "$1" ]]; then
+        du -h "$1" | cut -f1
+    else
+        echo "File not found: $1"
+    fi
+}
+
+# =============================================================================
+# SYSTEM MAINTENANCE FUNCTIONS
+# =============================================================================
+
+# Clean IntelliJ IDEA completely (reset trial)
+function clean_idea() {
+    echo "🧹 Cleaning IntelliJ IDEA..."
+
+    rm -rf "/Applications/IntelliJ IDEA.app"
+    rm -rf ~/Library/Application\ Support/JetBrains/
+    rm -rf ~/Library/Preferences/com.apple.java.util.prefs.plist
+    rm -rf ~/Library/Preferences/com.jetbrains*
+    rm -rf ~/Library/Preferences/jetbrains*
+    rm -rf ~/Library/Caches/JetBrains
+    rm -rf ~/Library/Logs/JetBrains/
+    rm -rf ~/Library/Saved\ Application\ State/com.jetbrains.intellij.savedState/
+    rm -rf ~/.cache/JetBrains/
+    rm -rf ~/.config/JetBrains/
+
+    # Flush preference cache
+    killall cfprefsd 2>/dev/null || true
+
+    echo "✅ IntelliJ IDEA cleaned successfully"
+}
+
+# Comprehensive system maintenance
+function maintenance() {
+    echo "🧹 开始系统维护..."
+
+    echo "📦 更新 Homebrew..."
+    brew update && brew upgrade && brew cleanup
+
+    echo "🗑️ 清理系统缓存..."
+    # Be more careful with system cache cleanup
+    rm -rf ~/Library/Caches/* 2>/dev/null || true
+    sudo rm -rf /Library/Caches/* 2>/dev/null || true
+
+    # Clean development tool caches
+    npm cache clean --force 2>/dev/null || true
+    yarn cache clean 2>/dev/null || true
+    go clean -cache 2>/dev/null || true
+    pip cache purge 2>/dev/null || true
+
+    echo "🐳 清理 Docker..."
+    docker system prune -f 2>/dev/null || true
+
+    echo "🔍 重建 Spotlight 索引..."
+    sudo mdutil -E / 2>/dev/null || true
+
+    echo "💾 清理下载文件夹中的旧文件..."
+    find ~/Downloads -type f -mtime +30 -ls 2>/dev/null || true
+
+    echo "✅ 系统维护完成！"
+}
+
+# Quick system info
+function sysinfo() {
+    echo "🖥️  System Information"
+    echo "===================="
+    echo "OS: $(sw_vers -productName) $(sw_vers -productVersion)"
+    echo "Kernel: $(uname -r)"
+    echo "Uptime: $(uptime | awk '{print $3,$4}' | sed 's/,//')"
+    echo "Memory: $(vm_stat | grep "Pages free" | awk '{print $3}' | sed 's/\.//')KB free"
+    echo "Disk: $(df -h / | awk 'NR==2{print $4}') available"
+    echo "CPU: $(sysctl -n machdep.cpu.brand_string)"
+}
+
+# =============================================================================
+# PRODUCTIVITY FUNCTIONS
+# =============================================================================
+
+# Quick note taking
+function note() {
+    local note_file="$HOME/notes.txt"
+    if [[ $# -eq 0 ]]; then
+        cat "$note_file" 2>/dev/null || echo "No notes found"
+    else
+        echo "$(date '+%Y-%m-%d %H:%M') - $*" >> "$note_file"
+        echo "Note added: $*"
+    fi
+}
+
+# Weather function
+function weather() {
+    local city="${1:-Shanghai}"
+    curl -s "wttr.in/$city?format=3"
+}
+
+# Create a backup of a file
+function backup() {
+    if [[ -f "$1" ]]; then
+        cp "$1" "$1.backup.$(date +%Y%m%d_%H%M%S)"
+        echo "Backup created: $1.backup.$(date +%Y%m%d_%H%M%S)"
+    else
+        echo "File not found: $1"
+    fi
+}
+
+# Quick calculator
+function calc() {
+    echo "scale=3; $*" | bc -l
+}
+
+# =============================================================================
+# PERFORMANCE MONITORING
+# =============================================================================
+
+# Show top processes by CPU usage
+function topcpu() {
+    ps aux | sort -nr -k 3 | head -10
+}
+
+# Show top processes by memory usage
+function topmem() {
+    ps aux | sort -nr -k 4 | head -10
+}
+
+# Show disk usage for current directory
+function diskusage() {
+    du -sh * | sort -hr
+}
+
+# =============================================================================
+# NETWORK UTILITIES
+# =============================================================================
+
+# Test internet connection
+function nettest() {
+    echo "Testing internet connection..."
+    if ping -c 1 google.com &> /dev/null; then
+        echo "✅ Internet connection is working"
+    else
+        echo "❌ No internet connection"
+    fi
+}
+
+# Show listening ports
+function ports() {
+    netstat -tulanp | grep LISTEN
+}
+
+# =============================================================================
+# DEVELOPMENT HELPERS
+# =============================================================================
+
+# Start a simple HTTP server in current directory
+function server() {
+    local port="${1:-8000}"
+    echo "Starting HTTP server on port $port..."
+    python3 -m http.server "$port"
+}
+
+# Generate a random password
+function genpass() {
+    local length="${1:-16}"
+    openssl rand -base64 "$length" | tr -d "=+/" | cut -c1-"$length"
+}
+
+# Show git log in a nice format
+function glog() {
+    git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+}
+
+# =============================================================================
+# LOAD COMPLETION
+# =============================================================================
+
+# Load completion for aliases if available
+if [[ -f /opt/homebrew/share/bash-completion/bash_completion ]]; then
+    source /opt/homebrew/share/bash-completion/bash_completion
+fi
+
+echo "✅ Aliases and functions loaded successfully!"

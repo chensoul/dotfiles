@@ -7,14 +7,26 @@ brew "vim"
 brew "curl"
 brew "wget"
 brew "jq"
+brew "gh"
+brew "go-task"  #taskfile
 brew "tree"
 brew "htop"
 brew "fastfetch"
 brew "fnm"  # node 版本管理
+brew "uv"
+brew "ollama"
+brew "pandoc"
+brew "pipx"
+brew "pnpm"
+brew "pyenv"
+brew "sdkman/tap/sdkman-cli"
+brew "spring-io/tap/spring-boot"
 
 # 语言和运行时
 brew "go"
 brew "python@3.12"
+brew "zulu@8"
+brew "rustup"
 
 # 容器和云工具
 brew "kubectl"
@@ -42,6 +54,8 @@ cask "orbstack"
 cask "switchhosts"
 cask "typora"
 cask "ghostty"
+brew "tinypng4mac"
+cask "picgo"
 
 # 通讯和办公
 cask "wechat"
