@@ -28,3 +28,5 @@ export PATH=$PATH:$GOPATH/bin
 
 # 加载 fnm
 eval "$(fnm env --use-on-cd)"
+
+export DOCKER_DEFAULT_PLATFORM=linux/arm64
