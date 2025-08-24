@@ -18,13 +18,14 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR=vim
 export LANG=en_US.UTF-8
 
+# 加载 SDKMAN
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 # 开发工具路径
+/usr/libexec/java_home -v 21 --exec java -version 2>/dev/null
 export JAVA_HOME=$(/usr/libexec/java_home)
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
-
-# 加载 SDKMAN
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # 加载 fnm
 eval "$(fnm env --use-on-cd)"
