@@ -13,6 +13,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+source ~/.aliases
 
 # 自定义环境变量
 export EDITOR=vim
