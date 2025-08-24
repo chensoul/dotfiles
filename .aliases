@@ -107,3 +107,21 @@ function clean_idea(){
   killall cfprefsd
 
 }
+
+function maintenance(){
+  echo "🧹 开始系统维护..."
+
+  echo "📦 更新 Homebrew..."
+  brew update && brew upgrade && brew cleanup
+  
+  echo "🗑️ 清理系统缓存..."
+  sudo rm -rf /System/Library/Caches/* /Library/Caches/*  ~/Library/Caches/*
+  sudo npm cache clean --force 2>/dev/null || true
+  sudo yarn cache clean 2>/dev/null || true
+  sudo go clean -cache 2>/dev/null || true
+  
+  echo "🔍 重建 Spotlight 索引..."
+  sudo mdutil -E /
+  
+  echo "✅ 系统维护完成！"
+}
