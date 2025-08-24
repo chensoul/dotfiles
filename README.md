@@ -30,12 +30,45 @@
 git clone https://github.com/chensoul/dotfiles.git
 cd dotfiles
 
-# Run the installation script
+# Make the script executable
+chmod +x install.sh
+
+# Run the installation script (IMPORTANT: Use bash, not sh)
+bash install.sh
+# OR
 ./install.sh
 
 # Optional: Apply macOS system optimizations
-./osx.sh
+bash osx.sh
 ```
+
+### 🔧 Alternative: Step-by-Step Installation
+
+If you prefer a modular approach or encounter issues with the full script:
+
+```bash
+# 1. Install only dotfiles (quick setup)
+bash setup-dotfiles.sh
+
+# 2. Install software packages via Homebrew
+brew bundle
+
+# 3. Install Java development tools via SDKMAN
+sdk install java
+sdk install maven
+sdk install gradle
+sdk install springboot
+
+# 4. Apply macOS optimizations (optional)
+bash osx.sh
+```
+
+### ⚠️ Important Notes
+
+- **Always use `bash install.sh`** or `./install.sh`
+- **Never use `sh install.sh`** - this will cause errors
+- The script requires bash features and will not work with basic sh
+- **SDKMAN is now managed via Homebrew** for better integration
 
 ## 📁 File Structure
 
@@ -57,8 +90,8 @@ dotfiles/
 ## 🛠️ What Gets Installed
 
 ### Development Tools
-- **Languages**: Java (via SDKMAN), Go, Python 3.12, Rust, Node.js (via fnm)
-- **Build Tools**: Maven, Gradle, Spring Boot CLI
+- **Languages**: Java (via Homebrew + SDKMAN), Go, Python 3.12, Rust, Node.js (via fnm)
+- **Build Tools**: Maven, Gradle, Spring Boot CLI (all via SDKMAN)
 - **Version Control**: Git, GitHub CLI
 - **Containers**: Docker, Kubernetes tools (kubectl, k9s, helm)
 - **Editors**: Vim, IntelliJ IDEA
@@ -67,7 +100,7 @@ dotfiles/
 - **System**: htop, tree, fastfetch, coreutils, findutils
 - **Network**: curl, wget, httpie, nmap
 - **File Processing**: jq, pandoc, rename
-- **Package Managers**: Homebrew, fnm, pyenv, pipx, pnpm
+- **Package Managers**: Homebrew (primary), SDKMAN (Java ecosystem), fnm (Node.js), pyenv (Python), rustup (Rust)
 
 ### GUI Applications
 - **Development**: IntelliJ IDEA, Insomnia, Ghostty
@@ -92,10 +125,12 @@ The setup includes a smart git configuration that automatically switches between
 - **Utility functions** for system maintenance, git operations, and productivity
 - **Auto-completion** for various tools and commands
 
-### Homebrew Optimization
-- **Chinese mirrors** for faster package downloads
-- **Automatic environment setup** for both Intel and Apple Silicon Macs
-- **Bundle management** with comprehensive Brewfile
+### Package Management Strategy
+- **Homebrew as Primary**: Main package manager for most tools and applications
+- **SDKMAN via Homebrew**: Java ecosystem tools (Java, Maven, Gradle, Spring Boot)
+- **Language-specific managers**: fnm (Node.js), pyenv (Python), rustup (Rust)
+- **Chinese mirrors** for faster downloads in China
+- **Unified management** through Brewfile for reproducible setups
 
 ## 🎯 Key Aliases & Functions
 
@@ -182,7 +217,18 @@ alias myalias='your command here'
 
 ### Common Issues
 
-**1. Homebrew Installation Fails**
+**1. Script Fails with "sh install.sh"**
+```bash
+# ❌ Wrong way (will cause errors)
+sh install.sh
+
+# ✅ Correct way
+bash install.sh
+# OR
+chmod +x install.sh && ./install.sh
+```
+
+**2. Homebrew Installation Fails**
 ```bash
 # For Apple Silicon Macs, ensure Homebrew is in PATH
 eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -190,8 +236,17 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 **2. SDKMAN Tools Not Found**
 ```bash
-# Reload SDKMAN
-source ~/.sdkman/bin/sdkman-init.sh
+# Check if SDKMAN is installed via Homebrew
+brew list sdkman-cli
+
+# Reload shell configuration
+source ~/.zshrc
+
+# Check SDKMAN status
+sdk version
+
+# If still not working, reinstall via Homebrew
+brew reinstall sdkman-cli
 ```
 
 **3. Oh My Zsh Not Installed**
@@ -203,6 +258,11 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 **4. Aliases Not Working**
 ```bash
 # Reload shell configuration
+source ~/.zshrc
+
+# If you get "ZSH_VERSION: unbound variable" error
+# This is fixed in the current version, but if you encounter it:
+unset ZSH_VERSION
 source ~/.zshrc
 ```
 

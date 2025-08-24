@@ -26,6 +26,7 @@ brew "spring-io/tap/spring-boot"
 brew "go"
 brew "python@3.12"
 brew "rustup"
+# Java 通过 SDKMAN 管理，不在这里安装
 
 # 容器和云工具
 brew "kubectl"

@@ -14,7 +14,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# 加载 SDKMAN
+# 加载 SDKMAN (Homebrew 版本)
 export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
 
