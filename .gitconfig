@@ -9,10 +9,14 @@
   st = status
   di = diff
   co = checkout
+  ci = commit
   cl = clone
   cp = cherry-pick
   br = branch
-  unstage = reset HEAD
+  last = log -1 HEAD
+  unstage = reset HEAD --
+  # 美化日志显示
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
 [rebase]
   autosquash = true
@@ -31,6 +35,7 @@
 [credential]
   helper = osxkeychain
 
+# 条件配置：根据目录自动切换用户信息
 [includeIf "gitdir:~/development/personal/"]
   path = .gitconfig-personal
 [includeIf "gitdir:~/development/work/"]
