@@ -1,23 +1,37 @@
 [core]
   editor = vim
   pager = cat
-  autocrlf = input
+  autocrlf = true
+  eol = lf
+  safecrlf = false
 
 [alias]
-    l  = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --
-[credential]
-	helper = osxkeychain
+  st = status
+  di = diff
+  co = checkout
+  cl = clone
+  cp = cherry-pick
+  br = branch
+  unstage = reset HEAD
+
+[rebase]
+  autosquash = true
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [pull]
-	rebase = false
-
+  ff = only
+[rerere]
+  enabled = true
+[http]
+  postBuffer = 5242880000
 [http "https://github.com"]
-	proxy = socks5://127.0.0.1:7890
+  proxy = socks5://127.0.0.1:7890
 [https "https://github.com"]
-	proxy = socks5://127.0.0.1:7890
+  proxy = socks5://127.0.0.1:7890
+[credential]
+  helper = osxkeychain
 
-[includeIf "gitdir:~/code/github/"]
-    path = .gitconfig-personal
-[includeIf "gitdir:~/code/work/"]
-    path = .gitconfig-work
+[includeIf "gitdir:~/development/personal/"]
+  path = .gitconfig-personal
+[includeIf "gitdir:~/development/work/"]
+  path = .gitconfig-work
