@@ -26,7 +26,6 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install springboot
 sdk install maven
 sdk install mvnd
-sdk install jbang
 sdk install gradle
 
 
