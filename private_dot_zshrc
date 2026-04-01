@@ -31,13 +31,16 @@ if [[ -n "${_sdkman_prefix}" ]]; then
 fi
 unset _sdkman_prefix
 
-# Java / Go：仅在 SDKMAN 已配置且已安装 java 候选时设置 JAVA_HOME
+# Java：仅在 SDKMAN 已配置且已安装 java 候选时设置 JAVA_HOME
 if [[ -n "${SDKMAN_DIR:-}" && -d "${SDKMAN_DIR}/candidates/java/current" ]]; then
   export JAVA_HOME="${SDKMAN_DIR}/candidates/java/current"
   export PATH="${JAVA_HOME}/bin:${PATH}"
 fi
-export GOPATH="${HOME}/go"
-export PATH="${PATH}:${GOPATH}/bin"
+
+# JVM 参数优化
+export JAVA_OPTS="-Xms1g -Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication"
+# Maven 性能优化
+export MAVEN_OPTS="-Xms1g -Xmx4g -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 
 # 部分 Homebrew 公式仍提供 bash-completion 脚本
 if [[ -f /opt/homebrew/share/bash-completion/bash_completion ]]; then
