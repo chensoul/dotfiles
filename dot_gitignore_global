@@ -1,0 +1,15 @@
+# 全局忽略（git config --global core.excludesfile ~/.gitignore_global）
+.DS_Store
+.AppleDouble
+.LSOverride
+*~
+*.swp
+*.swo
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+*.log
+logs
+target

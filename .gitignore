@@ -1,0 +1,22 @@
+# 本地密钥与覆盖（复制自 .myrc.example）
+.myrc
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# system ignore
+.DS_Store
+Thumbs.db
+/Brewfile.lock.json
+
+.gitconfig-work

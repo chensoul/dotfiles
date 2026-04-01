@@ -1,0 +1,49 @@
+[core]
+  editor = vim
+  pager = cat
+  autocrlf = true
+  eol = lf
+  safecrlf = false
+  untrackedCache = true
+  excludesfile = ~/.gitignore_global
+
+[alias]
+  st = status
+  a = add
+  di = diff
+  co = checkout
+  ci = commit
+  cl = clone
+  cp = cherry-pick
+  br = branch
+  pl = pull
+  last = log -1 HEAD
+  unstage = reset HEAD --
+  lo = log --oneline
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+[rebase]
+  autosquash = true
+[init]
+  defaultBranch = main
+[pull]
+  ff = only
+[rerere]
+  enabled = true
+[http]
+  postBuffer = 5242880000
+[http "https://github.com"]
+  proxy = socks5://127.0.0.1:7890
+[https "https://github.com"]
+  proxy = socks5://127.0.0.1:7890
+[credential]
+  helper = osxkeychain
+
+# 条件配置：根据目录自动切换用户信息
+[user]
+	name = chensoul
+	email = ichensoul@gmail.com
+[includeIf "gitdir:~/work/"]
+  path = .gitconfig-work
+[safe]
+	directory = *

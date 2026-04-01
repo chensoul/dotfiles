@@ -1,0 +1,71 @@
+# Kaku Shell
+[[ ":$PATH:" != *":$HOME/.config/kaku/zsh/bin:"* ]] && export PATH="$HOME/.config/kaku/zsh/bin:$PATH" # Kaku PATH Integration
+[[ -f "$HOME/.config/kaku/zsh/kaku.zsh" ]] && source "$HOME/.config/kaku/zsh/kaku.zsh" # Kaku Shell Integration
+
+# -----------------------------------------------------------------------------
+# 用户配置
+# -----------------------------------------------------------------------------
+[[ -f ~/.aliases ]] && source ~/.aliases
+[[ -f ~/.myrc ]] && source ~/.myrc
+
+# -----------------------------------------------------------------------------
+# Homebrew（镜像可按网络环境改回官方 https://brew.sh）
+# -----------------------------------------------------------------------------
+export HOMEBREW_PIP_INDEX_URL="https://pypi.mirrors.ustc.edu.cn/simple"
+export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# -----------------------------------------------------------------------------
+# SDKMAN（brew：tap sdkman/tap && brew install sdkman-cli）
+# -----------------------------------------------------------------------------
+_sdkman_prefix="$(brew --prefix sdkman-cli 2>/dev/null)" || true
+if [[ -n "${_sdkman_prefix}" ]]; then
+  export SDKMAN_DIR="${_sdkman_prefix}/libexec"
+  [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
+fi
+unset _sdkman_prefix
+
+# Java / Go：仅在 SDKMAN 已配置且已安装 java 候选时设置 JAVA_HOME
+if [[ -n "${SDKMAN_DIR:-}" && -d "${SDKMAN_DIR}/candidates/java/current" ]]; then
+  export JAVA_HOME="${SDKMAN_DIR}/candidates/java/current"
+  export PATH="${JAVA_HOME}/bin:${PATH}"
+fi
+export GOPATH="${HOME}/go"
+export PATH="${PATH}:${GOPATH}/bin"
+
+# 部分 Homebrew 公式仍提供 bash-completion 脚本
+if [[ -f /opt/homebrew/share/bash-completion/bash_completion ]]; then
+  source /opt/homebrew/share/bash-completion/bash_completion
+elif [[ -f /usr/local/share/bash-completion/bash_completion ]]; then
+  source /usr/local/share/bash-completion/bash_completion
+fi
+
+# -----------------------------------------------------------------------------
+# Node（fnm）与 pnpm
+# -----------------------------------------------------------------------------
+if command -v fnm >/dev/null 2>&1; then
+  eval "$(fnm env --use-on-cd)"
+fi
+
+export PNPM_HOME="${HOME}/Library/pnpm"
+case ":${PATH}:" in
+  *":${PNPM_HOME}:"*) ;;
+  *) export PATH="${PNPM_HOME}:${PATH}" ;;
+esac
+
+# -----------------------------------------------------------------------------
+# OrbStack（命令行集成，未安装则忽略）
+# -----------------------------------------------------------------------------
+[[ -f "${HOME}/.orbstack/shell/init.zsh" ]] && source "${HOME}/.orbstack/shell/init.zsh"
+
+
+
+
+
+
