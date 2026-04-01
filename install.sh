@@ -106,4 +106,8 @@ fi
 eval "$(ssh-agent -s)"
 ssh-add "$ssh_key_path" 2>/dev/null || true
 
-echo "安装流程结束。新开会话或执行: source ~/.zprofile"
+source ~/.zshrc
+
+chezmoi init --apply https://github.com/$GITHUB_USERNAME/dotfiles.git
+
+echo "安装流程结束。"
