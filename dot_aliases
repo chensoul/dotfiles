@@ -228,6 +228,7 @@ EOF
 # 语言与工具
 # -----------------------------------------------------------------------------
 alias typora="open -a typora"
+alias cursor="open -a Cursor"
 alias venv='python3 -m venv'
 alias activate='source venv/bin/activate'
 alias http='xh'
