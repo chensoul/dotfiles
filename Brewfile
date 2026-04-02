@@ -7,10 +7,10 @@ tap "tw93/tap"            # Kaku
 
 # --- 开发工具 ---
 brew "gh"        # GitHub CLI
-brew "go-task"   # Taskfile（若已只用 just，可删本行）
 brew "fnm"       # Node 版本管理
 brew "uv"        # Python 包/环境
 brew "pandoc"    # 文档转换
+brew "tableplus"
 
 # --- 命令行（搜索、列表、编辑）---
 brew "bash"          # 较新 bash

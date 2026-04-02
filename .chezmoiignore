@@ -2,3 +2,4 @@ README.md
 Brewfile
 install.sh
 .gitignore
+.editorconfig
