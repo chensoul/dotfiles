@@ -24,9 +24,14 @@ alias .='pwd'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='../../../../..'
 alias ~='cd ~'
 alias dl='cd ~/Downloads'
 alias dt='cd ~/Desktop'
+
+alias md='mkdir -p'
+alias rd=rmdir
 
 # -----------------------------------------------------------------------------
 # 搜索与阅读（与 Brewfile 中 fd / ripgrep / bat 对应）
@@ -103,6 +108,33 @@ alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup
 # -----------------------------------------------------------------------------
 # Git（仅 shell：分支名、批量操作；其余用 git st / git a / git lo 等）
 # -----------------------------------------------------------------------------
+# 基础别名
+alias g='git'
+alias ga='git add'
+alias gaa='git add --all'
+alias gb='git branch'
+alias gbd='git branch -d'
+alias gbl='git blame'
+alias gc='git commit -v'
+alias gcmsg='git commit -m'
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gcor='git checkout --restore'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gf='git fetch'
+alias gl='git pull'
+alias gp='git push'
+alias gst='git status'
+alias gss='git status -s'
+alias gsta='git stash save'
+alias gstp='git stash pop'
+alias glp='git log --oneline -20'
+alias glo='git log --oneline --decorate'
+alias glg='git log --stat'
+alias glgp='git log --stat -p'
+alias glog='git log --oneline --graph --decorate'
+
 # pullcode / pushcode 默认在 $HOME/github、$HOME/work 下扫描一级子目录；
 # 需要只处理当前目录时: pullcode .  或  pullcode --here ； pushcode --here "<说明>"
 # -----------------------------------------------------------------------------

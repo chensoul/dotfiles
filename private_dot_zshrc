@@ -1,7 +1,3 @@
-# Kaku Shell
-[[ ":$PATH:" != *":$HOME/.config/kaku/zsh/bin:"* ]] && export PATH="$HOME/.config/kaku/zsh/bin:$PATH" # Kaku PATH Integration
-[[ -f "$HOME/.config/kaku/zsh/kaku.zsh" ]] && source "$HOME/.config/kaku/zsh/kaku.zsh" # Kaku Shell Integration
-
 # -----------------------------------------------------------------------------
 # 用户配置
 # -----------------------------------------------------------------------------
@@ -68,7 +64,46 @@ esac
 [[ -f "${HOME}/.orbstack/shell/init.zsh" ]] && source "${HOME}/.orbstack/shell/init.zsh"
 
 
+eval "$(zoxide init zsh)"
 
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# -----------------------------------------------------------------------------
+# Starship 提示符主题
+# -----------------------------------------------------------------------------
+eval "$(starship init zsh)"
 
+# -----------------------------------------------------------------------------
+# Zsh 选项优化
+# -----------------------------------------------------------------------------
+setopt auto_cd             # 直接 cd 到目录名
+setopt auto_pushd          # 自动 pushd
+setopt pushd_ignore_dups   # 忽略重复目录
+setopt pushdminus          # 支持 cd -2 等语法
+
+# 历史记录优化
+HISTSIZE=50000
+SAVEHIST=50000
+setopt HIST_IGNORE_ALL_DUPS    # 删除重复历史
+setopt HIST_FIND_NO_DUPS       # 搜索不显示重复
+setopt HIST_REDUCE_BLANKS      # 删除空白行
+setopt HIST_IGNORE_SPACE       # 忽略空格开头的命令
+setopt SHARE_HISTORY           # 多会话共享历史
+setopt APPEND_HISTORY          # 追加模式
+setopt INC_APPEND_HISTORY      # 立即写入
+setopt EXTENDED_HISTORY        # 保存时间戳
+
+# -----------------------------------------------------------------------------
+# Yazi 文件管理器（cd 到退出时的目录）
+# -----------------------------------------------------------------------------
+y() {
+	local cwd
+	cwd="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$cwd"
+	if cwd="$(cat -- "$cwd")" && [[ -n "$cwd" && "$cwd" != "$PWD" ]]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$cwd"
+}
