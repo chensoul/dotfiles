@@ -35,7 +35,10 @@ set _sdkman_prefix (brew --prefix sdkman-cli 2>/dev/null)
 if test -n "$_sdkman_prefix"
     set -gx SDKMAN_DIR "$_sdkman_prefix/libexec"
     if test -s "$SDKMAN_DIR/bin/sdkman-init.sh"
-        source "$SDKMAN_DIR/bin/sdkman-init.sh"
+        # Run sdkman-init.sh in bash and extract exported variables for fish
+        for line in (bash -c "source \"$SDKMAN_DIR/bin/sdkman-init.sh\" && echo \"SDKMAN_VERSION=\$SDKMAN_VERSION\" && echo \"SDKMAN_CANDIDATES_CSV=\$SDKMAN_CANDIDATES_CSV\" && echo \"SDKMAN_PLATFORM=\$SDKMAN_PLATFORM\"")
+            set -gx (string split '=' $line)[1] (string split '=' $line)[2]
+        end
     end
 end
 set -e _sdkman_prefix
@@ -277,7 +280,7 @@ end
 # 用法：cleanup [-n|--dry-run]
 function cleanup
     set -l dry_run false
-    if test "$argv[1]" = "-n"; -o "$argv[1]" = "--dry-run
+    if test "$argv[1]" = "-n"; or test "$argv[1]" = "--dry-run"
         set dry_run true
     end
 
