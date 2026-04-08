@@ -29,9 +29,16 @@ alias ......='../../../../..'
 alias ~='cd ~'
 alias dl='cd ~/Downloads'
 alias dt='cd ~/Desktop'
-
 alias md='mkdir -p'
 alias rd=rmdir
+
+# -----------------------------------------------------------------------------
+# 语言与工具
+# -----------------------------------------------------------------------------
+alias typora="open -a typora"
+alias cursor="open -a Cursor"
+alias venv='python3 -m venv'
+alias activate='source venv/bin/activate'
 
 # -----------------------------------------------------------------------------
 # 搜索与阅读（与 Brewfile 中 fd / ripgrep / bat 对应）
@@ -39,69 +46,6 @@ alias rd=rmdir
 alias f='fd'
 alias r='rg'
 alias cat='bat --style=plain'
-
-# -----------------------------------------------------------------------------
-# 维护：清理构建产物 / 系统与 Homebrew 更新
-# -----------------------------------------------------------------------------
-# cleanup：删除当前目录下常见构建/依赖目录与 .DS_Store、*.log（含 venv/.venv/Pods；不进入 .git/.hg/.svn）
-function cleanup() {
-  local dry_run=false
-  case "${1:-}" in
-    -h | --help)
-      cat <<'EOF'
-cleanup — 清理当前目录下常见构建产物与缓存
-用法: cleanup [-n|--dry-run]
-  -n, --dry-run  只列出将删除的路径，不执行删除
-  -h, --help     显示此说明
-会删除的目录名（匹配即整目录删除）:
-  node_modules, target, build, dist, out, .next, __pycache__,
-  .pytest_cache, .mypy_cache, .gradle, .turbo, coverage, .nuxt,
-  venv, .venv, Pods（Python 虚拟环境与 CocoaPods 依赖，可重建）
-会删除的文件:
-  .DS_Store, *.log
-始终在仓库根或项目根执行；不会进入 .git / .hg / .svn。
-EOF
-      return 0
-      ;;
-    -n | --dry-run) dry_run=true ;;
-    "")
-      ;;
-    *)
-      echo "cleanup: 未知参数: $1（使用 cleanup -h 查看帮助）" >&2
-      return 1
-      ;;
-  esac
-
-  if [[ "$(pwd -P)" == "/" ]]; then
-    echo "cleanup: 拒绝在文件系统根目录 / 下执行" >&2
-    return 1
-  fi
-
-  if $dry_run; then
-    echo "cleanup: dry-run（不会删除）:"
-    find . \( -name .git -o -name .hg -o -name .svn \) -prune -o \
-      \( -type d \( \
-        -name node_modules -o -name target -o -name build -o -name dist -o -name out -o \
-        -name .next -o -name __pycache__ -o -name .pytest_cache -o -name .mypy_cache -o \
-        -name .gradle -o -name .turbo -o -name coverage -o -name .nuxt -o \
-        -name venv -o -name .venv -o -name Pods \
-      \) \) -print 2>/dev/null
-    find . \( -name .git -o -name .hg -o -name .svn \) -prune -o \
-      \( -type f \( -name .DS_Store -o -name '*.log' \) \) -print 2>/dev/null
-    return 0
-  fi
-
-  find . \( -name .git -o -name .hg -o -name .svn \) -prune -o \
-    \( -type d \( \
-      -name node_modules -o -name target -o -name build -o -name dist -o -name out -o \
-      -name .next -o -name __pycache__ -o -name .pytest_cache -o -name .mypy_cache -o \
-      -name .gradle -o -name .turbo -o -name coverage -o -name .nuxt -o \
-      -name venv -o -name .venv -o -name Pods \
-    \) \) -exec rm -rf {} + 2>/dev/null || true
-
-  find . \( -name .git -o -name .hg -o -name .svn \) -prune -o \
-    \( -type f \( -name .DS_Store -o -name '*.log' \) \) -delete 2>/dev/null || true
-}
 
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup'
 
@@ -134,14 +78,12 @@ alias glo='git log --oneline --decorate'
 alias glg='git log --stat'
 alias glgp='git log --stat -p'
 alias glog='git log --oneline --graph --decorate'
+alias git_current_branch="git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||'"
+alias gg='git push origin "$(git_current_branch)"'
 
 # pullcode / pushcode 默认在 $HOME/github、$HOME/work 下扫描一级子目录；
 # 需要只处理当前目录时: pullcode .  或  pullcode --here ； pushcode --here "<说明>"
 # -----------------------------------------------------------------------------
-
-alias git_current_branch="git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||'"
-alias gg='git push origin "$(git_current_branch)"'
-
 function pullcode() {
   case "${1:-}" in
     -h | --help)
@@ -257,15 +199,6 @@ EOF
 }
 
 # -----------------------------------------------------------------------------
-# 语言与工具
-# -----------------------------------------------------------------------------
-alias typora="open -a typora"
-alias cursor="open -a Cursor"
-alias venv='python3 -m venv'
-alias activate='source venv/bin/activate'
-alias http='xh'
-
-# -----------------------------------------------------------------------------
 # 通用函数
 # -----------------------------------------------------------------------------
 function mkd() {
@@ -331,3 +264,68 @@ function clean_idea() {
 
     echo "✅ IntelliJ IDEA cleaned successfully"
 }
+
+
+# -----------------------------------------------------------------------------
+# 维护：清理构建产物 / 系统与 Homebrew 更新
+# -----------------------------------------------------------------------------
+# cleanup：删除当前目录下常见构建/依赖目录与 .DS_Store、*.log（含 venv/.venv/Pods；不进入 .git/.hg/.svn）
+function cleanup() {
+  local dry_run=false
+  case "${1:-}" in
+    -h | --help)
+      cat <<'EOF'
+cleanup — 清理当前目录下常见构建产物与缓存
+用法: cleanup [-n|--dry-run]
+  -n, --dry-run  只列出将删除的路径，不执行删除
+  -h, --help     显示此说明
+会删除的目录名（匹配即整目录删除）:
+  node_modules, target, build, dist, out, .next, __pycache__,
+  .pytest_cache, .mypy_cache, .gradle, .turbo, coverage, .nuxt,
+  venv, .venv, Pods（Python 虚拟环境与 CocoaPods 依赖，可重建）
+会删除的文件:
+  .DS_Store, *.log
+始终在仓库根或项目根执行；不会进入 .git / .hg / .svn。
+EOF
+      return 0
+      ;;
+    -n | --dry-run) dry_run=true ;;
+    "")
+      ;;
+    *)
+      echo "cleanup: 未知参数: $1（使用 cleanup -h 查看帮助）" >&2
+      return 1
+      ;;
+  esac
+
+  if [[ "$(pwd -P)" == "/" ]]; then
+    echo "cleanup: 拒绝在文件系统根目录 / 下执行" >&2
+    return 1
+  fi
+
+  if $dry_run; then
+    echo "cleanup: dry-run（不会删除）:"
+    find . \( -name .git -o -name .hg -o -name .svn \) -prune -o \
+      \( -type d \( \
+        -name node_modules -o -name target -o -name build -o -name dist -o -name out -o \
+        -name .next -o -name __pycache__ -o -name .pytest_cache -o -name .mypy_cache -o \
+        -name .gradle -o -name .turbo -o -name coverage -o -name .nuxt -o \
+        -name venv -o -name .venv -o -name Pods \
+      \) \) -print 2>/dev/null
+    find . \( -name .git -o -name .hg -o -name .svn \) -prune -o \
+      \( -type f \( -name .DS_Store -o -name '*.log' \) \) -print 2>/dev/null
+    return 0
+  fi
+
+  find . \( -name .git -o -name .hg -o -name .svn \) -prune -o \
+    \( -type d \( \
+      -name node_modules -o -name target -o -name build -o -name dist -o -name out -o \
+      -name .next -o -name __pycache__ -o -name .pytest_cache -o -name .mypy_cache -o \
+      -name .gradle -o -name .turbo -o -name coverage -o -name .nuxt -o \
+      -name venv -o -name .venv -o -name Pods \
+    \) \) -exec rm -rf {} + 2>/dev/null || true
+
+  find . \( -name .git -o -name .hg -o -name .svn \) -prune -o \
+    \( -type f \( -name .DS_Store -o -name '*.log' \) \) -delete 2>/dev/null || true
+}
+

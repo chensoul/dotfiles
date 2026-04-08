@@ -61,13 +61,16 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 killall Dock 2>/dev/null || true
 killall Finder 2>/dev/null || true
 
-# Homebrew（国内镜像）
-export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
-export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
-export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
-export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/bottles"
+# Homebrew（国内镜像 - USTC）
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+export HOMEBREW_CDN_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+export HOMEBREW_PIP_INDEX_URL="https://pypi.mirrors.ustc.edu.cn/simple"
 
 if ! command -v brew &>/dev/null; then
+  export HOMEBREW_INSTALL_FROM_ZIP=1
   /bin/bash -c "$(curl -fsSL https://gitee.com/ineo6/homebrew-install/raw/master/install.sh)"
 fi
 
@@ -106,8 +109,8 @@ fi
 eval "$(ssh-agent -s)"
 ssh-add "$ssh_key_path" 2>/dev/null || true
 
-source ~/.zshrc
-
-chezmoi init --apply https://github.com/$GITHUB_USERNAME/dotfiles.git
+# Chezmoi（从 GitHub 克隆并应用配置）
+# 如果有加密文件，会提示输入 GPG 密码
+chezmoi init --apply https://github.com/chensoul/dotfiles.git
 
 echo "安装流程结束。"
