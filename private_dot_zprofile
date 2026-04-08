@@ -1,9 +1,9 @@
 # ~/.zprofile - 登录 Shell 的环境变量配置
-# 用于配置 Homebrew 镜像源和 PATH
+# 仅包含基础环境变量（GUI 应用继承 + 非 fish 场景）
+# 注：fish shell 不读取此文件，专属配置在 dot_config/fish/config.fish
 
 # -----------------------------------------------------------------------------
-# Homebrew 镜像源（USTC - 国内加速）
-# https://mirrors.ustc.edu.cn/help/homebrew.html
+# Homebrew 镜像源（USTC）
 # -----------------------------------------------------------------------------
 export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
 export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
@@ -27,14 +27,3 @@ case ":${PATH}:" in
   *":${PNPM_HOME}:"*) ;;
   *) export PATH="${PNPM_HOME}:${PATH}" ;;
 esac
-
-# -----------------------------------------------------------------------------
-# 其他环境变量
-# -----------------------------------------------------------------------------
-# 编辑器
-export EDITOR="cursor"
-export VISUAL="cursor"
-
-# 语言
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
