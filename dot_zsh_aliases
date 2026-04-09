@@ -1,0 +1,28 @@
+# -----------------------------------------------------------------------------
+# 别名
+# -----------------------------------------------------------------------------
+alias ll="ls -lah"
+alias la="ls -A"
+alias l="ls -CF"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+# git 别名
+alias g="git"
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gco="git checkout"
+alias gb="git branch"
+alias gl="git log --oneline -20"
+alias gp="git push"
+alias gpull="git pull"
+
+# pnpm 别名
+alias p="pnpm"
+alias pi="pnpm install"
+alias pd="pnpm dev"
+alias pb="pnpm build"
+alias ps="pnpm start"
+alias pt="pnpm test"
