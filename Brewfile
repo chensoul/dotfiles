@@ -3,7 +3,6 @@
 # --- Taps ---
 tap "farion1231/ccswitch" # cc-switch
 tap "sdkman/tap"          # SDKMAN（Java/Maven 等）
-tap "tw93/tap"            # Kaku
 
 # --- 开发工具 ---
 brew "gh"        # GitHub CLI
@@ -59,5 +58,4 @@ cask "switchhosts"                   # Hosts 切换
 cask "typora"                        # Markdown 编辑器
 cask "wechat"                        # 微信
 cask "wetype"                        # 微信输入法
-cask "tw93/tap/kakuku"               # Kaku 终端
 cask "farion1231/ccswitch/cc-switch" # 代理环境切换（cc-switch）
