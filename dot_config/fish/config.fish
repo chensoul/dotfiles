@@ -29,15 +29,23 @@ if not string match -q ":$PNPM_HOME:" ":$PATH:"
 end
 
 # -----------------------------------------------------------------------------
-# SDKMAN（brew：tap sdkman/tap && brew install sdkman-cli）
+# SDKMAN
 # -----------------------------------------------------------------------------
 set _sdkman_prefix (brew --prefix sdkman-cli 2>/dev/null)
-if test -n "$_sdkman_prefix"
+if test -n "$_sdkman_prefix" -a -f "$_sdkman_prefix/libexec/bin/sdkman-init.sh"
     set -gx SDKMAN_DIR "$_sdkman_prefix/libexec"
-    if test -s "$SDKMAN_DIR/bin/sdkman-init.sh"
-        # Run sdkman-init.sh in bash and extract exported variables for fish
-        for line in (bash -c "source \"$SDKMAN_DIR/bin/sdkman-init.sh\" && echo \"SDKMAN_VERSION=\$SDKMAN_VERSION\" && echo \"SDKMAN_CANDIDATES_CSV=\$SDKMAN_CANDIDATES_CSV\" && echo \"SDKMAN_PLATFORM=\$SDKMAN_PLATFORM\"")
-            set -gx (string split '=' $line)[1] (string split '=' $line)[2]
+else if test -d "$HOME/.sdkman"
+    set -gx SDKMAN_DIR "$HOME/.sdkman"
+else if test -d /usr/share/sdkman
+    set -gx SDKMAN_DIR "/usr/share/sdkman"
+end
+
+if test -n "$SDKMAN_DIR" -a -s "$SDKMAN_DIR/bin/sdkman-init.sh"
+    # 使用 bash 初始化 SDKMAN，并导出 sdk 函数到 fish
+    function sdk
+        set -l bash_sdk (command -s bash)
+        if test -n "$bash_sdk"
+            bash -c "source \"$SDKMAN_DIR/bin/sdkman-init.sh\" && sdk $argv"
         end
     end
 end
