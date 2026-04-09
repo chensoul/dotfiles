@@ -1,0 +1,186 @@
+# -----------------------------------------------------------------------------
+# Zsh Configuration
+# -----------------------------------------------------------------------------
+
+# 历史记录优化
+setopt HIST_IGNORE_DUPS
+setopt EXTENDED_HISTORY
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+
+# 补全设置
+autoload -Uz compinit
+compinit
+setopt COMPLETE_ALIASES
+
+# 目录跳转优化
+setopt AUTO_CD
+
+# -----------------------------------------------------------------------------
+# Homebrew
+# -----------------------------------------------------------------------------
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# -----------------------------------------------------------------------------
+# SDKMAN
+# -----------------------------------------------------------------------------
+export SDKMAN_DIR="/opt/homebrew/opt/sdkman-cli/libexec"
+if [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then
+    source "$SDKMAN_DIR/bin/sdkman-init.sh"
+fi
+
+# Java 和 Maven 性能优化
+export JAVA_OPTS="-Xms1g -Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication"
+export MAVEN_OPTS="-Xms1g -Xmx4g -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+
+# -----------------------------------------------------------------------------
+# PNPM
+# -----------------------------------------------------------------------------
+export PNPM_HOME="$HOME/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+# -----------------------------------------------------------------------------
+# OrbStack
+# -----------------------------------------------------------------------------
+[ -f "$HOME/.orbstack/shell/init.zsh" ] && source "$HOME/.orbstack/shell/init.zsh"
+
+# -----------------------------------------------------------------------------
+# Starship 提示符
+# -----------------------------------------------------------------------------
+eval "$(starship init zsh)"
+
+# -----------------------------------------------------------------------------
+# zoxide (目录跳转)
+# -----------------------------------------------------------------------------
+eval "$(zoxide init zsh)"
+
+# -----------------------------------------------------------------------------
+# 别名
+# -----------------------------------------------------------------------------
+alias ll="ls -lah"
+alias la="ls -A"
+alias l="ls -CF"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+# git 别名
+alias g="git"
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gco="git checkout"
+alias gb="git branch"
+alias gl="git log --oneline -20"
+alias gp="git push"
+alias gpull="git pull"
+
+# pnpm 别名
+alias p="pnpm"
+alias pi="pnpm install"
+alias pd="pnpm dev"
+alias pb="pnpm build"
+alias ps="pnpm start"
+alias pt="pnpm test"
+
+# -----------------------------------------------------------------------------
+# 自定义函数
+# -----------------------------------------------------------------------------
+
+# Yazi 文件管理器
+function y() {
+    local cwd
+    cwd=$(mktemp -t "yazi-cwd.XXXXXX")
+    yazi "$@" --cwd-file="$cwd"
+    if cwd=$(cat -- "$cwd") && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        cd -- "$cwd"
+    fi
+    rm -f -- "$cwd"
+}
+
+# 快速创建文件
+function touchd() {
+    mkdir -p "$(dirname "$1")"
+    touch "$1"
+}
+
+# 快速进入项目目录
+function proj() {
+    if [ -n "$1" ]; then
+        cd ~/github/"$1"
+    else
+        ls ~/github/
+    fi
+}
+
+# 查找并进入目录
+function fd() {
+    cd "$(find . -type d -name "*$1*" | head -1)"
+}
+
+# 杀死占用端口的进程
+function killport() {
+    if [ -z "$1" ]; then
+        echo "Usage: killport <port_number>"
+        return 1
+    fi
+    local pid
+    pid=$(lsof -ti tcp:"$1")
+    if [ -n "$pid" ]; then
+        echo "Killing process $pid on port $1"
+        kill -9 "$pid"
+    else
+        echo "No process found on port $1"
+    fi
+}
+
+# 清理构建产物
+function cleanup() {
+    local dry_run=false
+    if [ "$1" = "-n" ] || [ "$1" = "--dry-run" ]; then
+        dry_run=true
+    fi
+
+    if [ "$(pwd -P)" = "/" ]; then
+        echo "cleanup: refuse to run at filesystem root" >&2
+        return 1
+    fi
+
+    local dirs_to_clean="node_modules target build dist out .next __pycache__ .pytest_cache .mypy_cache .gradle .turbo coverage .nuxt venv .venv Pods"
+
+    if [ "$dry_run" = true ]; then
+        echo "cleanup: dry-run (won't delete):"
+        for dir in $dirs_to_clean; do
+            find . -type d -name "$dir" -maxdepth 10 2>/dev/null | while read -r d; do
+                [[ "$d" != */.git/* ]] && echo "$d"
+            done
+        done
+        return 0
+    fi
+
+    for dir in $dirs_to_clean; do
+        find . -type d -name "$dir" -maxdepth 10 2>/dev/null | while read -r d; do
+            [[ "$d" != */.git/* ]] && rm -rf "$d" 2>/dev/null
+        done
+    done
+
+    find . -type f \( -name ".DS_Store" -o -name "*.log" \) -maxdepth 10 2>/dev/null | while read -r f; do
+        [[ "$f" != */.git/* ]] && rm -f "$f" 2>/dev/null
+    done
+
+    echo "cleanup: done"
+}
+
+# 拉取代码
+function pullcode() {
+    local root
+    if [ "$1" = "." ] || [ "$1" = "--here" ]; then
+        root="$(pwd -P)"
+        (cd "$root" && for dir in */; do [ -d "$dir/.git" ] && (cd "$dir" && git pull); done)
+    else
+        for root in "$HOME/github" "$HOME/work"; do
+            [ -d "$root" ] && (cd "$root" && for dir in */; do [ -d "$dir/.git" ] && (cd "$dir" && git pull); done)
+        done
+    fi
+}

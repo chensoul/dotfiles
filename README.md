@@ -20,7 +20,7 @@
    bash install.sh
    ```
 
-   脚本会配置系统与 Homebrew、`brew bundle`（含 chezmoi）等，并在末尾执行 `chezmoi init --apply` 应用 dotfiles。
+   脚本会配置系统与 Homebrew、`brew bundle`（含 chezmoi）等，并在末尾执行 `chezmoi init --apply` 应用 dotfiles，最后将默认 shell 切换为 zsh。
 
 ### 仅同步 dotfiles
 

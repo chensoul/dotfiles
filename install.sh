@@ -113,4 +113,10 @@ ssh-add "$ssh_key_path" 2>/dev/null || true
 # 如果有加密文件，会提示输入 GPG 密码
 chezmoi init --apply https://github.com/chensoul/dotfiles.git
 
+# 将 zsh 设为默认 shell
+if ! dscl . -read ~/ UserShell | grep -q "/zsh"; then
+    echo "将默认 shell 切换为 zsh..."
+    chsh -s /opt/homebrew/bin/zsh
+fi
+
 echo "安装流程结束。"
