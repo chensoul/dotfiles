@@ -23,14 +23,11 @@ apply = ["source"]
 local = "~/.config/sheldon/plugins/zsh-syntax-highlighting"
 apply = ["source"]
 
-# Init plugins (using homebrew-installed binaries)
-# ------------------------------------------------
-# 注意：这些插件使用本地克隆的 repo 作为 source，但实际通过模板调用 homebrew 安装的版本
+# Inline init plugins (using homebrew-installed binaries)
+# -------------------------------------------------------
 
-[plugins.starship]
-local = "~/.config/sheldon/plugins/starship"
-apply = ["starship-init"]
+[plugins.starship-init]
+inline = 'eval "$(starship init zsh)"'
 
-[plugins.zoxide]
-local = "~/.config/sheldon/plugins/zoxide"
-apply = ["zoxide-init"]
+[plugins.zoxide-init]
+inline = 'eval "$(zoxide init zsh)"'
