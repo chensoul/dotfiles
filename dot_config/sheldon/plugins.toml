@@ -16,22 +16,20 @@ source = """{% for file in files %}source "{{ file }}"\n{% endfor %}"""
 # Plugins
 # -----------------------------------------------------------------------------
 
-# zsh-completions - 额外补全定义 (Homebrew)
-# 注意：必须放在第一个，因为需要设置 fpath
+# zsh-completions - 额外补全定义（使用 fpath 模板）
 [plugins.zsh-completions]
-inline = '''fpath=(
-  "/opt/homebrew/share/zsh-completions"
-  "/opt/homebrew/Cellar/zsh/5.9/share/zsh/functions"
-  $fpath
-)'''
+git = "https://github.com/zsh-users/zsh-completions"
+apply = ["fpath"]
 
-# zsh-syntax-highlighting - 语法高亮 (Homebrew)
+# zsh-syntax-highlighting - 语法高亮
 [plugins.zsh-syntax-highlighting]
-inline = 'source "/opt/homebrew/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"'
+git = "https://github.com/zsh-users/zsh-syntax-highlighting"
+apply = ["source"]
 
-# zsh-autosuggestions - 自动建议 (Homebrew)
+# zsh-autosuggestions - 自动建议
 [plugins.zsh-autosuggestions]
-inline = 'source "/opt/homebrew/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh"'
+git = "https://github.com/zsh-users/zsh-autosuggestions"
+apply = ["source"]
 
 # Starship 提示符 (Homebrew)
 [plugins.starship]
