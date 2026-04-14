@@ -20,7 +20,7 @@ fi
 # -----------------------------------------------------------------------------
 # 用户配置（aliases, myrc, functions）
 # -----------------------------------------------------------------------------
-[[ -f ~/.aliases ]] && source ~/.aliases
+[[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 [[ -f ~/.myrc ]] && source ~/.myrc
 [[ -f ~/.zsh_functions ]] && source ~/.zsh_functions
 
@@ -75,8 +75,15 @@ fi
 # -----------------------------------------------------------------------------
 # autoload 必须在 fpath 设置之后调用
 autoload -Uz compinit
-# -C: 跳过安全检查，-d: 指定 dump 文件路径
-compinit -C -d ~/.zcompdump-%N
+
+# 跳过 insecure directories 检查
+# 原因：Sheldon 克隆的插件目录在 ~/.local/share/sheldon/
+zmodload zsh/datetime
+if [[ -f ~/.zcompdump-$ZSH_VERSION ]]; then
+  compinit -C -d ~/.zcompdump-$ZSH_VERSION
+else
+  compinit -d ~/.zcompdump-$ZSH_VERSION
+fi
 
 # -----------------------------------------------------------------------------
 # Zsh 选项优化
