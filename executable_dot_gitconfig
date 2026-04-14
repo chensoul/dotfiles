@@ -1,8 +1,8 @@
 [core]
   editor = vim
   pager = cat
-  autocrlf = true
-  eol = lf
+	autocrlf = input
+	eol = lf
   safecrlf = false
   untrackedCache = true
   excludesfile = ~/.gitignore_global
@@ -32,10 +32,7 @@
   enabled = true
 [http]
   postBuffer = 5242880000
-[http "https://github.com"]
-  proxy = socks5://127.0.0.1:7890
-[https "https://github.com"]
-  proxy = socks5://127.0.0.1:7890
+	proxy = socks5://127.0.0.1:7890
 [credential]
   helper = osxkeychain
 
@@ -47,3 +44,5 @@
   path = ~/.gitconfig_work
 [safe]
   directory = *
+[https]
+	proxy = socks5://127.0.0.1:7890
