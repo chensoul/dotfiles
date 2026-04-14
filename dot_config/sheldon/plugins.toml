@@ -9,7 +9,7 @@ shell = "zsh"
 # 模板定义
 [templates]
 source = """{% for file in files %}source "{{ file }}"\n{% endfor %}"""
-hook-on-load = """{% for file in files %}eval "$( "{{ file }}" )"\n{% endfor %}"""
+starship-init = """eval "$(starship init zsh)"\n"""
 zoxide-init = """eval "$(zoxide init zsh)"\n"""
 
 # Sourced plugins
@@ -23,14 +23,14 @@ apply = ["source"]
 local = "~/.config/sheldon/plugins/zsh-syntax-highlighting"
 apply = ["source"]
 
-# Hook on-load plugins
-# --------------------
+# Init plugins (using homebrew-installed binaries)
+# ------------------------------------------------
+# 注意：这些插件使用本地克隆的 repo 作为 source，但实际通过模板调用 homebrew 安装的版本
 
 [plugins.starship]
 local = "~/.config/sheldon/plugins/starship"
-apply = ["hook-on-load"]
+apply = ["starship-init"]
 
-# zoxide - 使用本地克隆的 repo，但通过模板调用 homebrew 的 zoxide init
 [plugins.zoxide]
 local = "~/.config/sheldon/plugins/zoxide"
 apply = ["zoxide-init"]
