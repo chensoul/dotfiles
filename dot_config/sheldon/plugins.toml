@@ -13,27 +13,28 @@ shell = "zsh"
 # 标准 source 模板
 source = """{% for file in files %}source "{{ file }}"\n{% endfor %}"""
 
-# 延迟加载模板 (使用 zsh-defer，如需更快的启动速度可启用)
-defer = """{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source "{{ file }}"\n{% endfor %}{{ hooks?.post | nl }}"""
+# fpath 模板（用于补全）
+fpath = """fpath=( "{{ dir }}" $fpath )"""
 
 # Plugins
 # -----------------------------------------------------------------------------
 
-# 语法高亮 (本地克隆，避免 socks5 代理问题)
+# zsh-completions - 额外补全定义 (Homebrew)
+[plugins.zsh-completions]
+inline = 'fpath="/opt/homebrew/share/zsh-completions:$fpath"'
+
+# zsh-syntax-highlighting - 语法高亮 (Homebrew)
 [plugins.zsh-syntax-highlighting]
-local = "~/.config/sheldon/plugins/zsh-syntax-highlighting"
-apply = ["source"]
+inline = 'source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"'
 
-# 自动建议 (本地克隆，避免 socks5 代理问题)
+# zsh-autosuggestions - 自动建议 (Homebrew)
 [plugins.zsh-autosuggestions]
-local = "~/.config/sheldon/plugins/zsh-autosuggestions"
-use = ["{{ name }}.zsh"]
-apply = ["source"]
+inline = 'source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"'
 
-# Starship 提示符 (使用 homebrew 版本)
+# Starship 提示符 (Homebrew)
 [plugins.starship]
 inline = 'eval "$(starship init zsh)"'
 
-# zoxide 目录跳转 (使用 homebrew 版本)
+# zoxide 目录跳转 (Homebrew)
 [plugins.zoxide]
 inline = 'eval "$(zoxide init zsh)"'
