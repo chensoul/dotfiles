@@ -8,9 +8,9 @@ shell = "zsh"
 
 # 模板定义
 [templates]
-defer = """{% for file in files %}zsh-defer source "{{ file }}"\n{% endfor %}"""
 source = """{% for file in files %}source "{{ file }}"\n{% endfor %}"""
 hook-on-load = """{% for file in files %}eval "$( "{{ file }}" )"\n{% endfor %}"""
+zoxide-init = """eval "$(zoxide init zsh)"\n"""
 
 # Sourced plugins
 # ---------------
@@ -29,3 +29,8 @@ apply = ["source"]
 [plugins.starship]
 local = "~/.config/sheldon/plugins/starship"
 apply = ["hook-on-load"]
+
+# zoxide - 使用本地克隆的 repo，但通过模板调用 homebrew 的 zoxide init
+[plugins.zoxide]
+local = "~/.config/sheldon/plugins/zoxide"
+apply = ["zoxide-init"]
