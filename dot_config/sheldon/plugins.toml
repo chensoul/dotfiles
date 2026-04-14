@@ -1,0 +1,35 @@
+# -----------------------------------------------------------------------------
+# Sheldon Zsh Plugin Manager Configuration
+# https://sheldon.cli.rs
+# -----------------------------------------------------------------------------
+
+# 全局配置
+shell = "zsh"
+
+# 模板定义
+[templates]
+defer = """{% for file in files %}zsh-defer source "{{ file }}"\n{% endfor %}"""
+source = """{% for file in files %}source "{{ file }}"\n{% endfor %}"""
+hook-on-load = """{% for file in files %}eval "$( "{{ file }}" )"\n{% endfor %}"""
+
+# Sourced plugins
+# ---------------
+
+[plugins.zsh-autosuggestions]
+local = "~/.config/sheldon/plugins/zsh-autosuggestions"
+apply = ["source"]
+
+[plugins.zsh-syntax-highlighting]
+local = "~/.config/sheldon/plugins/zsh-syntax-highlighting"
+apply = ["source"]
+
+# Hook on-load plugins
+# --------------------
+
+[plugins.starship]
+local = "~/.config/sheldon/plugins/starship"
+apply = ["hook-on-load"]
+
+[plugins.zoxide]
+local = "~/.config/sheldon/plugins/zoxide"
+apply = ["hook-on-load"]

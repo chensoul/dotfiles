@@ -3,6 +3,7 @@
 # -----------------------------------------------------------------------------
 [[ -f ~/.aliases ]] && source ~/.aliases
 [[ -f ~/.myrc ]] && source ~/.myrc
+[[ -f ~/.zsh_functions ]] && source ~/.zsh_functions
 
 # -----------------------------------------------------------------------------
 # Homebrew（镜像可按网络环境改回官方 https://brew.sh）
@@ -63,17 +64,17 @@ esac
 # -----------------------------------------------------------------------------
 [[ -f "${HOME}/.orbstack/shell/init.zsh" ]] && source "${HOME}/.orbstack/shell/init.zsh"
 
-
-eval "$(zoxide init zsh)"
-
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # -----------------------------------------------------------------------------
-# Starship 提示符主题
+# Sheldon 插件管理器（替代 oh-my-zsh）
+# https://sheldon.cli.rs
 # -----------------------------------------------------------------------------
-eval "$(starship init zsh)"
+if command -v sheldon >/dev/null 2>&1; then
+  eval "$(sheldon source)"
+else
+  # Fallback: 直接加载插件（未安装 sheldon 时）
+  eval "$(zoxide init zsh)"
+  eval "$(starship init zsh)"
+fi
 
 # -----------------------------------------------------------------------------
 # Zsh 选项优化
@@ -94,16 +95,3 @@ setopt SHARE_HISTORY           # 多会话共享历史
 setopt APPEND_HISTORY          # 追加模式
 setopt INC_APPEND_HISTORY      # 立即写入
 setopt EXTENDED_HISTORY        # 保存时间戳
-
-# -----------------------------------------------------------------------------
-# Yazi 文件管理器（cd 到退出时的目录）
-# -----------------------------------------------------------------------------
-y() {
-	local cwd
-	cwd="$(mktemp -t "yazi-cwd.XXXXXX")"
-	yazi "$@" --cwd-file="$cwd"
-	if cwd="$(cat -- "$cwd")" && [[ -n "$cwd" && "$cwd" != "$PWD" ]]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$cwd"
-}

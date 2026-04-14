@@ -26,3 +26,6 @@ alias pd="pnpm dev"
 alias pb="pnpm build"
 alias ps="pnpm start"
 alias pt="pnpm test"
+
+# yazi 文件管理器
+alias y="yazi"
