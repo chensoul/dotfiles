@@ -1,33 +1,39 @@
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Sheldon Zsh Plugin Manager Configuration
 # https://sheldon.cli.rs
-# -----------------------------------------------------------------------------
+# =============================================================================
 
 # 全局配置
 shell = "zsh"
 
 # 模板定义
+# -----------------------------------------------------------------------------
+
 [templates]
+# 标准 source 模板
 source = """{% for file in files %}source "{{ file }}"\n{% endfor %}"""
-starship-init = """eval "$(starship init zsh)"\n"""
-zoxide-init = """eval "$(zoxide init zsh)"\n"""
 
-# Sourced plugins
-# ---------------
+# 延迟加载模板 (使用 zsh-defer，如需更快的启动速度可启用)
+defer = """{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source "{{ file }}"\n{% endfor %}{{ hooks?.post | nl }}"""
 
-[plugins.zsh-autosuggestions]
-local = "~/.config/sheldon/plugins/zsh-autosuggestions"
-apply = ["source"]
+# Plugins
+# -----------------------------------------------------------------------------
 
+# 语法高亮 (本地克隆，避免 socks5 代理问题)
 [plugins.zsh-syntax-highlighting]
 local = "~/.config/sheldon/plugins/zsh-syntax-highlighting"
 apply = ["source"]
 
-# Inline init plugins (using homebrew-installed binaries)
-# -------------------------------------------------------
+# 自动建议 (本地克隆，避免 socks5 代理问题)
+[plugins.zsh-autosuggestions]
+local = "~/.config/sheldon/plugins/zsh-autosuggestions"
+use = ["{{ name }}.zsh"]
+apply = ["source"]
 
-[plugins.starship-init]
+# Starship 提示符 (使用 homebrew 版本)
+[plugins.starship]
 inline = 'eval "$(starship init zsh)"'
 
-[plugins.zoxide-init]
+# zoxide 目录跳转 (使用 homebrew 版本)
+[plugins.zoxide]
 inline = 'eval "$(zoxide init zsh)"'
