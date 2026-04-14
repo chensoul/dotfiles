@@ -6,20 +6,27 @@ config_file = "/Users/chensoul/.config/sheldon/plugins.toml"
 
 [[plugins]]
 name = "zsh-completions"
-raw = """
-fpath=(
-  "/opt/homebrew/share/zsh-completions"
-  "/opt/homebrew/Cellar/zsh/5.9/share/zsh/functions"
-  $fpath
-)"""
+source_dir = "/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-completions"
+files = ["/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-completions/zsh-completions.plugin.zsh"]
+apply = ["fpath"]
+
+[plugins.hooks]
 
 [[plugins]]
 name = "zsh-syntax-highlighting"
-raw = 'source "/opt/homebrew/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"'
+source_dir = "/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-syntax-highlighting"
+files = ["/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"]
+apply = ["source"]
+
+[plugins.hooks]
 
 [[plugins]]
 name = "zsh-autosuggestions"
-raw = 'source "/opt/homebrew/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh"'
+source_dir = "/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-autosuggestions"
+files = ["/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"]
+apply = ["source"]
+
+[plugins.hooks]
 
 [[plugins]]
 name = "starship"
