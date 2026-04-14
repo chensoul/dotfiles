@@ -1,12 +1,20 @@
 # -----------------------------------------------------------------------------
-# 别名
+# 文件列表 (使用 eza 替代 ls)
+# https://eza.robbowen.digital/
 # -----------------------------------------------------------------------------
-alias ll="ls -lah"
-alias la="ls -A"
-alias l="ls -CF"
+alias ls="eza --color=automatic"
+alias ll="eza -lah --git"
+alias la="eza -A --git"
+alias l="eza -CF"
+alias lt="eza --tree -L 2"        # 树状显示 2 层
+alias llf="eza -lah --git -F"     # 带文件类型指示符
+alias lla="eza -lah --git -a"     # 包含隐藏文件
+
+# 目录跳转
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
+alias .....="cd ../../../.."
 
 # git 别名
 alias g="git"
@@ -16,8 +24,8 @@ alias gc="git commit"
 alias gco="git checkout"
 alias gb="git branch"
 alias gl="git log --oneline -20"
-alias gp="git push"
-alias gpull="git pull"
+alias gg="git push"
+alias gp="git pull"
 
 # pnpm 别名
 alias p="pnpm"
