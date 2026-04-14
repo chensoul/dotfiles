@@ -27,5 +27,5 @@ alias pb="pnpm build"
 alias ps="pnpm start"
 alias pt="pnpm test"
 
-# yazi 文件管理器
-alias y="yazi"
+# yazi 文件管理器（使用函数版本，支持 cd）
+# alias y="yazi"

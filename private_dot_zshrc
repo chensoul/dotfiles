@@ -1,17 +1,16 @@
-# -----------------------------------------------------------------------------
-# 用户配置
-# -----------------------------------------------------------------------------
-[[ -f ~/.aliases ]] && source ~/.aliases
-[[ -f ~/.myrc ]] && source ~/.myrc
-[[ -f ~/.zsh_functions ]] && source ~/.zsh_functions
+# =============================================================================
+# Zsh Configuration
+# Powered by Sheldon Plugin Manager
+# =============================================================================
 
 # -----------------------------------------------------------------------------
-# Homebrew（镜像可按网络环境改回官方 https://brew.sh）
+# 基础环境变量
 # -----------------------------------------------------------------------------
-export HOMEBREW_PIP_INDEX_URL="https://pypi.mirrors.ustc.edu.cn/simple"
 export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
 export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+export HOMEBREW_PIP_INDEX_URL="https://pypi.mirrors.ustc.edu.cn/simple"
 
+# Homebrew 路径设置
 if [[ -x /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [[ -x /usr/local/bin/brew ]]; then
@@ -19,35 +18,33 @@ elif [[ -x /usr/local/bin/brew ]]; then
 fi
 
 # -----------------------------------------------------------------------------
-# SDKMAN（brew：tap sdkman/tap && brew install sdkman-cli）
+# 用户配置（aliases, myrc, functions）
+# -----------------------------------------------------------------------------
+[[ -f ~/.aliases ]] && source ~/.aliases
+[[ -f ~/.myrc ]] && source ~/.myrc
+[[ -f ~/.zsh_functions ]] && source ~/.zsh_functions
+
+# -----------------------------------------------------------------------------
+# SDKMAN (brew: tap sdkman/tap && brew install sdkman-cli)
 # -----------------------------------------------------------------------------
 _sdkman_prefix="$(brew --prefix sdkman-cli 2>/dev/null)" || true
 if [[ -n "${_sdkman_prefix}" ]]; then
   export SDKMAN_DIR="${_sdkman_prefix}/libexec"
   [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
+  # Java HOME（仅当已安装 Java 时设置）
+  if [[ -d "${SDKMAN_DIR}/candidates/java/current" ]]; then
+    export JAVA_HOME="${SDKMAN_DIR}/candidates/java/current"
+    export PATH="${JAVA_HOME}/bin:${PATH}"
+  fi
 fi
 unset _sdkman_prefix
 
-# Java：仅在 SDKMAN 已配置且已安装 java 候选时设置 JAVA_HOME
-if [[ -n "${SDKMAN_DIR:-}" && -d "${SDKMAN_DIR}/candidates/java/current" ]]; then
-  export JAVA_HOME="${SDKMAN_DIR}/candidates/java/current"
-  export PATH="${JAVA_HOME}/bin:${PATH}"
-fi
-
-# JVM 参数优化
+# JVM & Maven 优化参数
 export JAVA_OPTS="-Xms1g -Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication"
-# Maven 性能优化
 export MAVEN_OPTS="-Xms1g -Xmx4g -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 
-# 部分 Homebrew 公式仍提供 bash-completion 脚本
-if [[ -f /opt/homebrew/share/bash-completion/bash_completion ]]; then
-  source /opt/homebrew/share/bash-completion/bash_completion
-elif [[ -f /usr/local/share/bash-completion/bash_completion ]]; then
-  source /usr/local/share/bash-completion/bash_completion
-fi
-
 # -----------------------------------------------------------------------------
-# Node（fnm）与 pnpm
+# Node.js (fnm) & pnpm
 # -----------------------------------------------------------------------------
 if command -v fnm >/dev/null 2>&1; then
   eval "$(fnm env --use-on-cd)"
@@ -60,12 +57,12 @@ case ":${PATH}:" in
 esac
 
 # -----------------------------------------------------------------------------
-# OrbStack（命令行集成，未安装则忽略）
+# OrbStack (可选，未安装则忽略)
 # -----------------------------------------------------------------------------
 [[ -f "${HOME}/.orbstack/shell/init.zsh" ]] && source "${HOME}/.orbstack/shell/init.zsh"
 
 # -----------------------------------------------------------------------------
-# Sheldon 插件管理器（替代 oh-my-zsh）
+# Sheldon 插件管理器
 # https://sheldon.cli.rs
 # -----------------------------------------------------------------------------
 if command -v sheldon >/dev/null 2>&1; then
@@ -73,14 +70,31 @@ if command -v sheldon >/dev/null 2>&1; then
 fi
 
 # -----------------------------------------------------------------------------
+# Bash 补全（部分 Homebrew 公式需要）
+# -----------------------------------------------------------------------------
+if [[ -f /opt/homebrew/share/bash-completion/bash_completion ]]; then
+  source /opt/homebrew/share/bash-completion/bash_completion
+elif [[ -f /usr/local/share/bash-completion/bash_completion ]]; then
+  source /usr/local/share/bash-completion/bash_completion
+fi
+
+# -----------------------------------------------------------------------------
+# Zsh 补全初始化（必须在 Sheldon 之后）
+# -----------------------------------------------------------------------------
+autoload -Uz compinit
+compinit
+
+# -----------------------------------------------------------------------------
 # Zsh 选项优化
 # -----------------------------------------------------------------------------
-setopt auto_cd             # 直接 cd 到目录名
-setopt auto_pushd          # 自动 pushd
-setopt pushd_ignore_dups   # 忽略重复目录
-setopt pushdminus          # 支持 cd -2 等语法
+setopt auto_cd              # 直接 cd 到目录名
+setopt auto_pushd           # 自动 pushd
+setopt pushd_ignore_dups    # 忽略重复目录
+setopt pushdminus           # 支持 cd -2 等语法
 
+# -----------------------------------------------------------------------------
 # 历史记录优化
+# -----------------------------------------------------------------------------
 HISTSIZE=50000
 SAVEHIST=50000
 setopt HIST_IGNORE_ALL_DUPS    # 删除重复历史
