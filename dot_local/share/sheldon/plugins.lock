@@ -1,0 +1,38 @@
+version = "0.8.5"
+home = "/Users/chensoul"
+config_dir = "/Users/chensoul/.config/sheldon"
+data_dir = "/Users/chensoul/.local/share/sheldon"
+config_file = "/Users/chensoul/.config/sheldon/plugins.toml"
+
+[[plugins]]
+name = "zsh-completions"
+raw = """
+fpath=(
+  "/opt/homebrew/share/zsh-completions"
+  "/opt/homebrew/Cellar/zsh/5.9/share/zsh/functions"
+  $fpath
+)"""
+
+[[plugins]]
+name = "zsh-syntax-highlighting"
+raw = 'source "/opt/homebrew/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"'
+
+[[plugins]]
+name = "zsh-autosuggestions"
+raw = 'source "/opt/homebrew/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh"'
+
+[[plugins]]
+name = "starship"
+raw = 'eval "$(starship init zsh)"'
+
+[[plugins]]
+name = "zoxide"
+raw = 'eval "$(zoxide init zsh)"'
+
+[templates]
+PATH = 'export PATH="{{ dir }}:$PATH"'
+path = 'path=( "{{ dir }}" $path )'
+fpath = 'fpath=( "{{ dir }}" $fpath )'
+source = """
+{% for file in files %}source "{{ file }}"
+{% endfor %}"""
