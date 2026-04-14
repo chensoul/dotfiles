@@ -70,11 +70,10 @@ esac
 # -----------------------------------------------------------------------------
 if command -v sheldon >/dev/null 2>&1; then
   eval "$(sheldon source)"
-else
-  # Fallback: 直接加载插件（未安装 sheldon 时）
-  eval "$(zoxide init zsh)"
-  eval "$(starship init zsh)"
 fi
+
+# zoxide - 智能目录跳转（使用 Homebrew 安装的版本）
+eval "$(zoxide init zsh)"
 
 # -----------------------------------------------------------------------------
 # Zsh 选项优化

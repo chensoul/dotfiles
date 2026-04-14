@@ -29,7 +29,3 @@ apply = ["source"]
 [plugins.starship]
 local = "~/.config/sheldon/plugins/starship"
 apply = ["hook-on-load"]
-
-[plugins.zoxide]
-local = "~/.config/sheldon/plugins/zoxide"
-apply = ["hook-on-load"]
