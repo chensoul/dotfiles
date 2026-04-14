@@ -62,6 +62,11 @@ esac
 [[ -f "${HOME}/.orbstack/shell/init.zsh" ]] && source "${HOME}/.orbstack/shell/init.zsh"
 
 # -----------------------------------------------------------------------------
+# Zsh 补全初始化（必须在插件之前加载）
+# -----------------------------------------------------------------------------
+autoload -Uz compinit
+
+# -----------------------------------------------------------------------------
 # Sheldon 插件管理器
 # https://sheldon.cli.rs
 # -----------------------------------------------------------------------------
@@ -69,19 +74,7 @@ if command -v sheldon >/dev/null 2>&1; then
   eval "$(command sheldon source)"
 fi
 
-# -----------------------------------------------------------------------------
-# Bash 补全（部分 Homebrew 公式需要）
-# -----------------------------------------------------------------------------
-if [[ -f /opt/homebrew/share/bash-completion/bash_completion ]]; then
-  source /opt/homebrew/share/bash-completion/bash_completion
-elif [[ -f /usr/local/share/bash-completion/bash_completion ]]; then
-  source /usr/local/share/bash-completion/bash_completion
-fi
-
-# -----------------------------------------------------------------------------
-# Zsh 补全初始化（必须在 Sheldon 之后）
-# -----------------------------------------------------------------------------
-autoload -Uz compinit
+# 初始化补全系统
 compinit
 
 # -----------------------------------------------------------------------------

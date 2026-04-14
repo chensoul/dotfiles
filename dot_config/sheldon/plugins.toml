@@ -13,9 +13,6 @@ shell = "zsh"
 # 标准 source 模板
 source = """{% for file in files %}source "{{ file }}"\n{% endfor %}"""
 
-# fpath 模板（用于补全）
-fpath = """fpath=( "{{ dir }}" $fpath )"""
-
 # Plugins
 # -----------------------------------------------------------------------------
 
@@ -25,11 +22,11 @@ inline = 'fpath="/opt/homebrew/share/zsh-completions:$fpath"'
 
 # zsh-syntax-highlighting - 语法高亮 (Homebrew)
 [plugins.zsh-syntax-highlighting]
-inline = 'source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"'
+inline = 'source "/opt/homebrew/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"'
 
 # zsh-autosuggestions - 自动建议 (Homebrew)
 [plugins.zsh-autosuggestions]
-inline = 'source "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"'
+inline = 'source "/opt/homebrew/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh"'
 
 # Starship 提示符 (Homebrew)
 [plugins.starship]
