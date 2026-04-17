@@ -5,7 +5,6 @@
 alias ls="eza --color=automatic"
 alias ll="eza -lah --git"
 alias la="eza -A --git"
-alias l="eza -CF"
 alias lt="eza --tree -L 2"        # 树状显示 2 层
 alias llf="eza -lah --git -F"     # 带文件类型指示符
 alias lla="eza -lah --git -a"     # 包含隐藏文件
