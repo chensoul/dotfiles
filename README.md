@@ -27,13 +27,13 @@
 若本机已安装 chezmoi，可直接从远程仓库初始化并应用：
 
 ```bash
-chezmoi init --apply https://github.com/chensoul/dotfiles.git
+chezmoi init --apply https://github.com/zhijunio/dotfiles.git
 ```
 
 ## 参考
 
-- [Mac 开发环境配置清单](https://blog.chensoul.cc/posts/mac-development-environment-setup)
-- [使用 chezmoi 在 macOS 上管理 dotfiles](https://blog.chensoul.cc/posts/chezmoi-dotfiles-macos)
+- [Mac 开发环境配置清单](https://blog.zhijun.io/posts/mac-development-environment-setup)
+- [使用 chezmoi 在 macOS 上管理 dotfiles](https://blog.zhijun.io/posts/chezmoi-dotfiles-macos)
 
 ## 许可
 

@@ -38,8 +38,8 @@
 
 # 条件配置：根据目录自动切换用户信息
 [user]
-  name = chensoul
-  email = ichensoul@gmail.com
+  name = zhijunio
+  email = zhijun.lab@gmail.com
 [includeIf "gitdir:~/work/"]
   path = ~/.gitconfig_work
 [safe]

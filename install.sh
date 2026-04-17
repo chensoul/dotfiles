@@ -16,7 +16,7 @@ if ! xcode-select -p &>/dev/null; then
   exit 1
 fi
 
-readonly COMPUTER_NAME="chensoul-mac"
+readonly COMPUTER_NAME="zhijunio-mac"
 readonly TIMEZONE="Asia/Shanghai"
 sudo scutil --set ComputerName "$COMPUTER_NAME"
 sudo scutil --set HostName "$COMPUTER_NAME"
@@ -111,7 +111,7 @@ ssh-add "$ssh_key_path" 2>/dev/null || true
 
 # Chezmoi（从 GitHub 克隆并应用配置）
 # 如果有加密文件，会提示输入 GPG 密码
-chezmoi init --apply https://github.com/chensoul/dotfiles.git
+chezmoi init --apply https://github.com/zhijunio/dotfiles.git
 
 # 将 zsh 设为默认 shell
 if ! dscl . -read ~/ UserShell | grep -q "/zsh"; then

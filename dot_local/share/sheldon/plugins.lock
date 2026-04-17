@@ -1,29 +1,29 @@
 version = "0.8.5"
-home = "/Users/chensoul"
-config_dir = "/Users/chensoul/.config/sheldon"
-data_dir = "/Users/chensoul/.local/share/sheldon"
-config_file = "/Users/chensoul/.config/sheldon/plugins.toml"
+home = "/Users/zhijunio"
+config_dir = "/Users/zhijunio/.config/sheldon"
+data_dir = "/Users/zhijunio/.local/share/sheldon"
+config_file = "/Users/zhijunio/.config/sheldon/plugins.toml"
 
 [[plugins]]
 name = "zsh-completions"
-source_dir = "/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-completions"
-files = ["/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-completions/zsh-completions.plugin.zsh"]
+source_dir = "/Users/zhijunio/.local/share/sheldon/repos/github.com/zsh-users/zsh-completions"
+files = ["/Users/zhijunio/.local/share/sheldon/repos/github.com/zsh-users/zsh-completions/zsh-completions.plugin.zsh"]
 apply = ["fpath"]
 
 [plugins.hooks]
 
 [[plugins]]
 name = "zsh-syntax-highlighting"
-source_dir = "/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-syntax-highlighting"
-files = ["/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"]
+source_dir = "/Users/zhijunio/.local/share/sheldon/repos/github.com/zsh-users/zsh-syntax-highlighting"
+files = ["/Users/zhijunio/.local/share/sheldon/repos/github.com/zsh-users/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"]
 apply = ["source"]
 
 [plugins.hooks]
 
 [[plugins]]
 name = "zsh-autosuggestions"
-source_dir = "/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-autosuggestions"
-files = ["/Users/chensoul/.local/share/sheldon/repos/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"]
+source_dir = "/Users/zhijunio/.local/share/sheldon/repos/github.com/zsh-users/zsh-autosuggestions"
+files = ["/Users/zhijunio/.local/share/sheldon/repos/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"]
 apply = ["source"]
 
 [plugins.hooks]
